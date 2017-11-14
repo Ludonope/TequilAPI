@@ -8,6 +8,7 @@
 namespace teq
 {
   class ACore;
+  class AMessage;
 
   class AModule
   {
@@ -24,6 +25,8 @@ namespace teq
       void removeOutput(AModule const *output);
       bool hasOutput(AModule const *) const;
 
+      void add(std::unique_ptr<AMessage> message) const;
+
     protected:
       AModule(std::string const &name, ModuleType type);
 
@@ -31,6 +34,7 @@ namespace teq
       std::string m_id;
       ModuleType m_type;
       bool m_isRunning;
+      mutable std::queue<std::unique_ptr<AMessage>> m_inputQueue;
   };
 }
 
