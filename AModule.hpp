@@ -8,7 +8,7 @@
 namespace teq
 {
   class ACore;
-  
+
   class AModule
   {
     public:
@@ -25,6 +25,12 @@ namespace teq
       bool hasOutput(AModule const *) const;
 
     protected:
+      AModule(std::string const &name, ModuleType type);
+
+      std::string m_name;
+      std::string m_id;
+      ModuleType m_type;
+      bool m_isRunning;
   };
 }
 
