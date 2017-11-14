@@ -4,17 +4,21 @@
 # include <string>
 # include <vector>
 # include <memory>
+# include "IConfig.hpp"
 
 namespace teq
 {
+  class AModule;
+  class IGui;
+
   class ACore
   {
     public:
       virtual void loadModule(std::string const &module) = 0;
       virtual void unloadModule(std::string const &module) = 0;
 
-      Config const &getConfig() const;
-      Config &getConfig();
+      IConfig const &getConfig() const;
+      IConfig &getConfig();
 
       virtual void loadGUI(std::string const &gui) = 0;
       virtual void unloadGUI() = 0;
@@ -26,7 +30,7 @@ namespace teq
 
     protected:
       std::vector<std::unique_ptr<AModule>> m_modules;
-      std::unique_ptr<AConfig> m_config;
+      std::unique_ptr<IConfig> m_config;
       std::unique_ptr<IGui> m_gui;
   };
 }
