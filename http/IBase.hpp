@@ -28,15 +28,11 @@ namespace teq
     using reverse_iterator = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-    virtual size_type paramCount() const = 0;
-    virtual iterator begin() = 0;
-    virtual iterator end() = 0;
-    virtual reverse_iterator rbegin() = 0;
-    virtual reverse_iterator rend() = 0;
-    virtual const_iterator cbegin() = 0;
-    virtual const_iterator cend() = 0;
-    virtual const_reverse_iterator crbegin() = 0;
-    virtual const_reverse_iterator crend() = 0;
+    virtual size_type paramCount() const noexcept = 0;
+    virtual iterator begin() noexcept = 0;
+    virtual iterator end() noexcept = 0;
+    virtual const_iterator begin() const noexcept = 0;
+    virtual const_iterator end() const noexcept = 0;
   };
 }
 
