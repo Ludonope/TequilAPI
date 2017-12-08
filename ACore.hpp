@@ -1,5 +1,5 @@
-#ifndef TEQUILAPI_CORE_HPP_
-# define TEQUILAPI_CORE_HPP_
+#ifndef TEQUILAPI_ACORE_HPP_
+# define TEQUILAPI_ACORE_HPP_
 
 # include <string>
 # include <vector>
@@ -14,4 +14,4 @@ namespace teq
   };
 }
 
-#endif // !TEQUILAPI_CORE_HPP_
+#endif // !TEQUILAPI_ACORE_HPP_
