@@ -8,26 +8,22 @@ namespace teq
 {
   namespace http
   {
-    class Uri final
+    class Uri final : public std::map<std::string, std::string>
     {
     public:
-      Uri() = default;
-      Uri(Uri const &that) = default;
-      Uri(Uri &&that) = default;
+      Uri();
+      Uri(Uri const &that);
+      Uri(Uri &&that);
       Uri(std::string const &path);
       Uri(std::string const &path, std::initializer_list<std::pair<std::string, std::string>> params);
       Uri(std::initializer_list<std::pair<std::string, std::string>> params);
-      ~Uri() noexcept = default;
+      ~Uri() noexcept;
 
-      Uri &operator=(Uri const &that) = default;
-      Uri &operator=(Uri &&that) = default;
+      Uri &operator=(Uri const &that);
+      Uri &operator=(Uri &&that);
 
       std::string const &path() const;
       void path(std::string const &path);
-
-      std::string &operator[](std::string const &param);
-      std::string const &at(std::string const &param) const;
-      std::string &at(std::string const &param);
 
       bool hasParam(std::string const &param) const;
 
@@ -35,7 +31,7 @@ namespace teq
 
     private:
       std::string m_path;
-      std::map<std::string, std::string> m_params;
+      std::map<std::string, std::string> &m_params;
     };
   }
 }
