@@ -17,9 +17,6 @@ int main()
 {
   Core core;
 
-  std::cout << "Loading" << std::endl;
   core.load("./TestModule.so");
-  std::cout << "Run" << std::endl;
   core.run();
-  std::cout << "Finish" << std::endl;
 }

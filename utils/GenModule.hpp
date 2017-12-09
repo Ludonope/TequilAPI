@@ -38,7 +38,6 @@ namespace teq
     {
       static fptr_t<R, Args...> getFunction(std::string const &sym, gen_mod_t const modPtr)
       {
-        std::cout << "modPtr: " << modPtr << std::endl;
   # if defined(__linux__) || (__APPLE__)
         fptr_t<R, Args...> func =
             reinterpret_cast<fptr_t<R, Args...>>(dlsym(modPtr, sym.c_str()));
@@ -46,7 +45,6 @@ namespace teq
         fptr_t<R, Args...> func =
             reinterpret_cast<fptr_t<R, Args...>>(GetProcAddress(modPtr, sym.c_str()));
   # endif
-        std::cout << "fptr: " << func << std::endl;
         return func;
       }
     };

@@ -13,7 +13,13 @@ namespace teq
   class SlotRegister
   {
   public:
-    SlotRegister() = default;
+    SlotRegister() :
+      m_data(),
+      m_parents(),
+      m_count({{0, 0, 0, 0, 0}})
+    {
+    }
+
     SlotRegister(SlotRegister const &that) = default;
     SlotRegister(SlotRegister &&that) = default;
     virtual ~SlotRegister() noexcept = default;
