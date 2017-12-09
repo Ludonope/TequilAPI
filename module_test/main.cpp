@@ -17,6 +17,6 @@ int main()
 {
   Core core;
 
-  core.load("./TestModule.so");
+  core.load("./zia_logger.so");
   core.run();
 }
