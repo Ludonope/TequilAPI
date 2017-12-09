@@ -70,17 +70,20 @@ namespace teq
 
       for (auto const &param : m_params)
       {
-        if (first)
+        for (auto const &val : param.second)
         {
-          res += '?';
-          first = false;
-        }
-        else
-        {
-          res += '&';
-        }
+          if (first)
+          {
+            res += '?';
+            first = false;
+          }
+          else
+          {
+            res += '&';
+          }
 
-        res += param.first + '=' + param.second;
+          res += param.first + '=' + val;
+        }
       }
 
       return res;

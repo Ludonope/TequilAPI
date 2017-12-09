@@ -25,6 +25,10 @@ LIABILITY, WHETHER IN AN ACTION OF  CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE  OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang system_header
+#endif
 
 #ifndef NLOHMANN_JSON_HPP
 #define NLOHMANN_JSON_HPP
@@ -14744,4 +14748,8 @@ inline nlohmann::json::json_pointer operator "" _json_pointer(const char* s, std
 #undef NLOHMANN_BASIC_JSON_TPL_DECLARATION
 #undef NLOHMANN_BASIC_JSON_TPL
 
+#endif
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
 #endif

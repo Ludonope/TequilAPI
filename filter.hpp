@@ -4,6 +4,8 @@
 # include <functional>
 # include "utils/SlotRegister.hpp"
 # include "utils/SlotList.hpp"
+# include "http/IRequest.hpp"
+# include "http/IResponse.hpp"
 
 namespace teq
 {
@@ -17,43 +19,40 @@ namespace teq
       OutputData
     };
 
-    namespace {
-      template <Type T>
-      struct Corresponding
-      {
-        static_assert(false, "This value is not a filter::Type");
-      };
+    template <Type T>
+    struct Corresponding
+    {
+    };
 
-      template <>
-      struct Corresponding<Type::InputData>
-      {
-        using Type = std::function<void(std::string &)>;
-      };
+    template <>
+    struct Corresponding<Type::InputData>
+    {
+      using Type = std::function<void(std::string &)>;
+    };
 
-      template <>
-      struct Corresponding<Type::Request>
-      {
-        using Type = std::function<void(http::IRequest &)>;
-      };
+    template <>
+    struct Corresponding<Type::Request>
+    {
+      using Type = std::function<void(http::IRequest &)>;
+    };
 
-      template <>
-      struct Corresponding<Type::Response>
-      {
-        using Type = std::function<void(http::IResponse &)>;
-      };
+    template <>
+    struct Corresponding<Type::Response>
+    {
+      using Type = std::function<void(http::IResponse &)>;
+    };
 
-      template <>
-      struct Corresponding<Type::OutputData>
-      {
-        using Type = std::function<void(std::string &)>;
-      };
-    }
+    template <>
+    struct Corresponding<Type::OutputData>
+    {
+      using Type = std::function<void(std::string &)>;
+    };
 
     template <Type T>
-    using Register<T> = SlotRegister<Corresponding<T>::Type>;
+    using Register = SlotRegister<typename Corresponding<T>::Type>;
 
     template <Type T>
-    using List<T> = SlotList<Corresponding<T>::Type>;
+    using List = SlotList<typename Corresponding<T>::Type>;
   }
 }
 

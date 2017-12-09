@@ -21,7 +21,7 @@ namespace teq
     SlotRegister &operator=(SlotRegister const &that) = default;
     SlotRegister &operator=(SlotRegister &&that) = default;
 
-    T &add(T const &value, Priority priority = Priority::Normal)
+    T &add(IModule const *parent, T const &value, Priority priority = Priority::Normal)
     {
       // Check if this item is not already in the list
       if (std::find(m_data.begin(), m_data.end(), value) != m_data.end())
@@ -44,7 +44,8 @@ namespace teq
       }
 
       // Insert it at {index} from the end
-      m_data.insert(m_data.rbegin() + index, value);
+      m_data.insert(m_data.begin() + (m_data.size() - index), value);
+      m_parents.insert(m_parents.begin() + index, parent);
       m_count[priorityValue] += 1;
 
       return m_data[index];
@@ -72,13 +73,31 @@ namespace teq
         }
       }
 
-      m_data.erase(elem);
+      m_data.erase(m_data.begin() + elemIndex);
+      m_parents.erase(m_parents.begin() + elemIndex);
       m_count[elemPriority] -= 1;
+    }
+
+    void clear(IModule const *module)
+    {
+      for (size_t i = 0; i < m_parents.size();)
+      {
+        if (m_parents[i] == module)
+        {
+          m_data.erase(m_data.begin() + i);
+          m_parents.erase(m_parents.begin() + i);
+        }
+        else
+        {
+          ++i;
+        }
+      }
     }
   protected:
     std::vector<T> m_data;
 
   private:
+    std::vector<IModule const *> m_parents;
     std::array<std::size_t, 5> m_count;
   };
 }

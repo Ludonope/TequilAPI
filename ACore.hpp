@@ -23,38 +23,17 @@ namespace teq
     virtual void unset(IConnection *module);
 
     template <filter::Type T>
-    filter::Register<T> &get<T>()
+    filter::Register<T> &get()
     {
-      static_assert(false, "This value is not a filter::Type");
-    }
-
-    template <>
-    filter::Register<filter::Type::InputData> &get()
-    {
-      return m_inputFilters;
-    }
-
-    template <>
-    filter::Register<filter::Type::Request> &get()
-    {
-      return m_requestFilters;
-    }
-
-    template <>
-    filter::Register<filter::Type::Response> &get()
-    {
-      return m_responseFilters;
-    }
-
-    template <>
-    filter::Register<filter::Type::OutputData> &get()
-    {
-      return m_outputFilters;
+      //static_assert(false, "This value is not a filter::Type");
     }
 
     virtual void run() = 0;
-    virtual IModule *load(std::string const &path) = 0;
-    virtual void unload(IModule *module) = 0;
+    virtual IModule *load(std::string const &path);
+    virtual void unload(IModule *module);
+
+    virtual SlotRegister<IHandler *> &handlers();
+    virtual SlotRegister<ILogger *> &loggers();
 
   protected:
     // List of every loaded modules
@@ -75,6 +54,30 @@ namespace teq
 
     nlohmann::json m_config;
   };
+
+  template <>
+  inline filter::Register<filter::Type::InputData> &ACore::get<filter::Type::InputData>()
+  {
+    return m_inputFilters;
+  }
+
+  template <>
+  inline filter::Register<filter::Type::Request> &ACore::get<filter::Type::Request>()
+  {
+    return m_requestFilters;
+  }
+
+  template <>
+  inline filter::Register<filter::Type::Response> &ACore::get<filter::Type::Response>()
+  {
+    return m_responseFilters;
+  }
+
+  template <>
+  inline filter::Register<filter::Type::OutputData> &ACore::get<filter::Type::OutputData>()
+  {
+    return m_outputFilters;
+  }
 }
 
 #endif // !TEQUILAPI_ACORE_HPP_
