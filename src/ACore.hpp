@@ -10,6 +10,7 @@
 # include "json.hpp"
 # include "modules/IHandler.hpp"
 # include "modules/ILogger.hpp"
+# include "utils/GenModule.hpp"
 
 namespace teq
 {
@@ -37,7 +38,7 @@ namespace teq
 
   protected:
     // List of every loaded modules
-    std::vector<std::unique_ptr<IModule>> m_modules;
+    std::vector<std::pair<std::unique_ptr<GenModule>, std::unique_ptr<IModule>>> m_modules;
 
     // Main modules
     IConfigLoader *m_configLoader;

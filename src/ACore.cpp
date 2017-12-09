@@ -42,16 +42,17 @@ namespace teq
 
   IModule *ACore::load(std::string const &path)
   {
-    std::cout << "Debug #1" << std::endl;
-    GenModule mod(path);
-    std::cout << "Debug #2" << std::endl;
-    auto getter = mod.getFunction<IModule *(void)>("getModule");
-    std::cout << "Debug #3" << getter << std::endl;
+    auto mod = std::make_unique<GenModule>(path);
+    auto getter = mod->getFunction<IModule *(void)>("getModule");
+    auto module = std::unique_ptr<IModule>(getter());
 
-    m_modules.emplace_back(getter());
-    std::cout << "Debug #4" << std::endl;
+    m_modules.emplace_back(std::move(mod), std::move(module));
 
-    return m_modules.back().get();
+    IModule *ptr = m_modules.back().second.get();
+
+    ptr->init(*this, m_config);
+
+    return ptr;
   }
 
   void ACore::unload(IModule *module)
@@ -76,7 +77,7 @@ namespace teq
 
     for (auto it = m_modules.begin(); it != m_modules.end();)
     {
-      if (it->get() == module)
+      if (it->second.get() == module)
       {
         m_modules.erase(it);
       }
