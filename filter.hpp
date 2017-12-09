@@ -2,6 +2,8 @@
 # define TEQUILAPI_FILTER_HPP_
 
 # include <functional>
+# include "utils/SlotRegister.hpp"
+# include "utils/SlotList.hpp"
 
 namespace teq
 {

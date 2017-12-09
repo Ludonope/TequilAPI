@@ -3,11 +3,11 @@
 
 # include <string>
 # include "json.hpp"
-# include "IModule.hpp"
+# include "IMainModule.hpp"
 
 namespace teq
 {
-  class IConfigLoader : public IModule
+  class IConfigLoader : public IMainModule
   {
   public:
     virtual ~IConfigLoader() noexcept {}

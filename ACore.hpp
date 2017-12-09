@@ -16,6 +16,7 @@ namespace teq
   class ACore
   {
   public:
+    virtual ~ACore() noexcept {}
     virtual void set(IConfigLoader *module);
     virtual void set(IConnection *module);
     virtual void unset(IConfigLoader *module);
@@ -50,6 +51,10 @@ namespace teq
     {
       return m_outputFilters;
     }
+
+    virtual void run() = 0;
+    virtual IModule *load(std::string const &path) = 0;
+    virtual void unload(IModule *module) = 0;
 
   protected:
     // List of every loaded modules

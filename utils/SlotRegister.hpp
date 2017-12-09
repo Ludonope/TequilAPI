@@ -3,6 +3,8 @@
 
 # include <vector>
 # include <array>
+# include <algorithm>
+# include <exception>
 # include "Priority.hpp"
 
 namespace teq
@@ -19,8 +21,60 @@ namespace teq
     SlotRegister &operator=(SlotRegister const &that) = default;
     SlotRegister &operator=(SlotRegister &&that) = default;
 
-    T &add(T const &value, Priority priority = Priority::Normal);
-    void remove(T const &value);
+    T &add(T const &value, Priority priority = Priority::Normal)
+    {
+      // Check if this item is not already in the list
+      if (std::find(m_data.begin(), m_data.end(), value) != m_data.end())
+      {
+        throw std::invalid_argument("This element is already in this slot register");
+      }
+
+      // Get the priority real value as an int
+      int priorityValue = static_cast<int>(priority);
+
+      assert(priorityValue >= 0 && priorityValue <= 4);
+
+      // Get the position of the item (from the end)
+      // based on it's priority
+      int index = 0;
+
+      for (int i = 0; i < priorityValue; ++i)
+      {
+        index += m_count[i];
+      }
+
+      // Insert it at {index} from the end
+      m_data.insert(m_data.rbegin() + index, value);
+      m_count[priorityValue] += 1;
+
+      return m_data[index];
+    }
+
+    void remove(T const &value)
+    {
+      auto elem = std::find(m_data.rbegin(), m_data.rend(), value);
+
+      // Check if this item is in the list
+      if (elem == m_data.rend())
+      {
+        throw std::invalid_argument("This element is not in this slot register");
+      }
+
+      int elemIndex = elem - m_data.rbegin();
+      int elemPriority = 0;
+
+      for (int sum = 0; elemPriority < 5; ++elemPriority)
+      {
+        sum += m_count[elemPriority];
+        if (sum > elemIndex)
+        {
+          break;
+        }
+      }
+
+      m_data.erase(elem);
+      m_count[elemPriority] -= 1;
+    }
   protected:
     std::vector<T> m_data;
 
