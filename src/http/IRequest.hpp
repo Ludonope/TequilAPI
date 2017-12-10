@@ -14,9 +14,9 @@ namespace teq
     public:
       virtual ~IRequest() noexcept {}
       virtual Method method() const = 0;
-      virtual void method(Method method) = 0;
+      virtual void setMethod(Method method) = 0;
       virtual Uri const &uri() const = 0;
-      virtual void uri(Uri const &uri) = 0;
+      virtual void setUri(Uri const &uri) = 0;
     };
   }
 }

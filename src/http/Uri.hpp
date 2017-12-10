@@ -22,7 +22,7 @@ namespace teq
       Uri &operator=(Uri &&that);
 
       std::string const &path() const;
-      void path(std::string const &path);
+      void setPath(std::string const &path);
 
       bool hasParam(std::string const &param) const;
 

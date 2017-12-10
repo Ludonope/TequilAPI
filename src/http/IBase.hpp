@@ -13,9 +13,10 @@ namespace teq
   public:
     virtual ~IBase() noexcept {}
     virtual std::pair<std::int32_t, std::int32_t> version() const = 0;
-    virtual void version(std::int32_t major = 1, std::int32_t minor = 1) = 0;
+    virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;
     virtual std::string const &body() const = 0;
-    virtual void body(std::string const &body) = 0;
+    virtual void setBody(std::string const &body) = 0;
+    virtual bool hasParam(std::string const &param) const = 0;
     virtual std::string &operator[](std::string const &param) = 0;
     virtual std::string const &at(std::string const &param) const = 0;
     virtual std::string &at(std::string const &param) = 0;

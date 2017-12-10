@@ -53,7 +53,7 @@ namespace teq
       return m_path;
     }
 
-    void Uri::path(std::string const &path)
+    void Uri::setPath(std::string const &path)
     {
       m_path = path;
     }

@@ -38,6 +38,7 @@ std::string const &TestModule::description() const
   return m_desc;
 }
 
+
 void TestModule::init(teq::ACore &core, nlohmann::json const &)
 {
   core.loggers().add(this, this);
@@ -45,5 +46,5 @@ void TestModule::init(teq::ACore &core, nlohmann::json const &)
 
 void TestModule::log(teq::LogType type, std::string const &message)
 {
-  std::cout << static_cast<int>(type) << ": " << message << std::endl;
+  std::cout << type << ": " << message << std::endl;
 }

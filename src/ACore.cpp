@@ -4,26 +4,26 @@
 
 namespace teq
 {
-  void ACore::set(IConfigLoader *module)
+  void ACore::setConfigLoader(IConfigLoader *module)
   {
     if (m_configLoader)
     {
-      this->unset(m_configLoader);
+      this->unsetConfigLoader(m_configLoader);
     }
     m_configLoader = module;
   }
 
-  void ACore::set(IConnection *module)
+  void ACore::setConnection(IConnection *module)
   {
     if (m_connection)
     {
-      this->unset(m_connection);
+      this->unsetConnection(m_connection);
     }
     m_connection = module;
     m_connection->enable();
   }
 
-  void ACore::unset(IConfigLoader *module)
+  void ACore::unsetConfigLoader(IConfigLoader *module)
   {
     if (m_configLoader == module)
     {
@@ -31,7 +31,7 @@ namespace teq
     }
   }
 
-  void ACore::unset(IConnection *module)
+  void ACore::unsetConnection(IConnection *module)
   {
     if (m_connection == module)
     {
@@ -59,12 +59,12 @@ namespace teq
   {
     if (m_configLoader == module)
     {
-      this->unset(m_configLoader);
+      this->unsetConfigLoader(m_configLoader);
     }
 
     if (m_connection == module)
     {
-      this->unset(m_connection);
+      this->unsetConnection(m_connection);
     }
 
     m_inputFilters.clear(module);
@@ -96,5 +96,13 @@ namespace teq
   SlotRegister<ILogger *> &ACore::loggers()
   {
     return m_loggers;
+  }
+
+  void ACore::log(LogType type, std::string const &message)
+  {
+    for (auto logger : m_loggers)
+    {
+      logger->log(type, message);
+    }
   }
 }

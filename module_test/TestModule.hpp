@@ -14,6 +14,7 @@ public:
 private:
   std::string m_name;
   std::string m_desc;
+  int m_a;
 };
 
 #endif // !TESTMODULE_HPP_

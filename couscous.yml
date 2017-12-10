@@ -1,0 +1,81 @@
+template:
+    # Name of the directory containing the website template (default is "website")
+    # Or if you are using a remote template, you can set the Git URL
+    url: https://github.com/pnowy/CouscousNativeTemplate
+    # Name of the index file (default is "README.md")
+    index: index.md
+
+# List of directories to include in the processing (by default it's empty, so all markdown files are parsed)
+# Paths are relative to the optional source path given when generating the website, repository root by default
+include:
+
+# List of directories to exclude from the processing (default contains "vendor" and "website")
+# Paths are relative to the optional include paths given when generating the website, repository root by default
+exclude:
+    - vendor
+    - website
+    # This special entry will ask Couscous to read the exluded directories from your ".gitignore"  file
+    - %gitignore%
+
+github:
+  user: Ludonope
+  repo: TequilAPI
+
+scripts:
+    # Scripts to execute before generating the website
+    before:
+    # Scripts to execute after generating the website
+    after:
+
+# Set this variable to use a Custom Domain
+# The content of this variable will be directly inserted into the CNAME file
+cname: 
+
+# Set the target branch in which to deploy the generated website
+branch: gh-pages
+
+# Any variable you put in this file is also available in the Twig layouts:
+title: TequilAPI 🌮󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠
+subTitle: A good API for a good project
+fontAwesomeIcon: fa
+footerText: A drunk API made by Arthur ARNAUD, Antoine BACHÉ, Ludovic PETRENKO and Lucas TRONCY
+
+# Base URL of the published website (no "/" at the end!)
+# You are advised to set and use this variable to write your links in the HTML layouts
+baseUrl: http://ludonope.github.io/TequilAPI
+
+menu:
+  sections:
+    main:
+      name: Getting started
+      items:
+        home:
+          text: TequilAPI
+          relativeUrl: index.html#tequilapi
+        how:
+          text: How does the server works ?
+          relativeUrl: index.html#how-does-the-server-works-
+        core:
+          text: The Core
+          relativeUrl: index.html#the-core
+        http:
+          text: The http Request and Response
+          relativeUrl: index.html#the-http-request-and-response
+        modules:
+          text: The modules
+          relativeUrl: index.html#the-modules
+        connect:
+          text: The Connection module
+          relativeUrl: index.html#the-connection-module
+        config:
+          text: The Configuration Loader module
+          relativeUrl: index.html#the-configuration-loader-module
+        logger:
+          text: The Logger module
+          relativeUrl: index.html#the-logger-module
+        handler:
+          text: The Handler module
+          relativeUrl: index.html#the-handler-module
+        filter:
+          text: The Filter module
+          relativeUrl: index.html#the-filter-module

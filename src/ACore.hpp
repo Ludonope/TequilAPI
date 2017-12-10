@@ -18,10 +18,10 @@ namespace teq
   {
   public:
     virtual ~ACore() noexcept {}
-    virtual void set(IConfigLoader *module);
-    virtual void set(IConnection *module);
-    virtual void unset(IConfigLoader *module);
-    virtual void unset(IConnection *module);
+    virtual void setConfigLoader(IConfigLoader *module);
+    virtual void setConnection(IConnection *module);
+    virtual void unsetConfigLoader(IConfigLoader *module);
+    virtual void unsetConnection(IConnection *module);
 
     template <filter::Type T>
     filter::Register<T> &get()
@@ -35,6 +35,8 @@ namespace teq
 
     virtual SlotRegister<IHandler *> &handlers();
     virtual SlotRegister<ILogger *> &loggers();
+
+    virtual void log(LogType type, std::string const &message);
 
   protected:
     // List of every loaded modules

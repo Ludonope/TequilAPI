@@ -11,9 +11,8 @@ namespace teq
   {
   public:
     virtual ~IConnection() noexcept {}
-    // TODO: connection need to fill a queue or something
-    virtual void setInput(std::queue<http::Message> *queue) = 0;
-    virtual void stop(std::queue<http::Message> *queue) = 0;
+    virtual void setInput(std::queue<http::Message> &queue) = 0;
+    virtual void setOutput(std::queue<http::Message> &queue) = 0;
   };
 }
 

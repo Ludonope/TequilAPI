@@ -16,7 +16,11 @@ public:
 int main()
 {
   Core core;
+  srand(time(NULL));
 
-  core.load("./zia_logger.so");
+  for (int i = 0; i < 10; ++i)
+  {
+    core.load("./zia_logger.so");
+  }
   core.run();
 }
