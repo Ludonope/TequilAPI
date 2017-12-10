@@ -13,7 +13,7 @@ There is also something called Filter. Thoses are functions that are called at s
 
 The Core is here to store and manage every modules.
 
-[Picture describing how it works](https://raw.githubusercontent.com/Ludonope/TequilAPI/master/how_does_it_works.png)
+[Picture describing how it works](https://github.com/Ludonope/TequilAPI/raw/master/how_does_it_works.png)
 
 ##The Core
 
@@ -572,4 +572,4 @@ std::function<void(std::string &)>
 ```
 
 ##The Project UML
-[UML of the API](https://raw.githubusercontent.com/Ludonope/TequilAPI/master/project_uml.png)
+[UML of the API](https://github.com/Ludonope/TequilAPI/raw/master/project_uml.png)
