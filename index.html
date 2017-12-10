@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>TequilAPI 🌮󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠</title>
+        <title>TequilAPI 🌮</title>
 
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Merriweather:400,900,700,300|Open+Sans:400,800,700|Titillium+Web:600,400' type='text/css'>
         <link rel="stylesheet" href="http://ludonope.github.io/TequilAPI/css/bootstrap.min.css">
@@ -17,7 +17,7 @@
         <header class="site-header">
             <div class="site-branding">
                 <h1 class="site-name">
-                    <a href="http://ludonope.github.io/TequilAPI" >TequilAPI 🌮󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠</a>&nbsp;&nbsp;<i class="fa"></i>
+                    <a href="http://ludonope.github.io/TequilAPI" >TequilAPI 🌮</a>&nbsp;&nbsp;<i class="fa"></i>
                 </h1>
                 <h2 class="site-description">A good API for a good project</h2>
             </div>
@@ -154,7 +154,7 @@ virtual void unsetConnection(IConnection *module);</code></pre>
     // ...
   };
 }</code></pre>
-<p>Note that the <code>SlotRegister</code> does not allow to access to the stored elements.
+<p>Note that the <code>SlotRegister</code> does not allow to access the stored elements.
 To access thoses, we use a <code>SlotList</code> (which is a <code>SlotRegister</code>). This one allow direct access to the storage.</p>
 <pre><code class="language-cpp">namespace teq
 {
@@ -173,7 +173,7 @@ To access thoses, we use a <code>SlotList</code> (which is a <code>SlotRegister<
   };
 }</code></pre>
 <blockquote>
-<p>The <code>begin()</code> and <code>end()</code> method will allow you to use this container in for range loops.</p>
+<p>The <code>begin()</code> and <code>end()</code> method will allow you to use this container in range-based for loops.</p>
 </blockquote>
 <p>The <code>Filter.hpp</code> file also define aliases on those types for uniform usage.</p>
 <pre><code class="language-cpp">namespace teq
@@ -203,7 +203,7 @@ virtual SlotRegister&lt;IHandler *&gt; &amp;handlers();
 
 template &lt;filter::Type T&gt;
 filter::Register&lt;T&gt; &amp;get();</code></pre>
-<p>This way, you can add a specific filter this way</p>
+<p>You can add a specific filter this way</p>
 <pre><code class="language-cpp">core.get&lt;filter::Type::Request&gt;().add(...);</code></pre>
 <p>Finally, it has a <code>log</code> method which will pass the parameters to every registered logger.</p>
 <pre><code class="language-cpp">virtual void log(LogType type, std::string const &amp;message);</code></pre>
@@ -230,7 +230,7 @@ SlotList&lt;IHandler *&gt; m_handlers;
 SlotList&lt;ILogger *&gt; m_loggers;
 
 nlohmann::json m_config;</code></pre>
-<p>The <code>GenModule</code> stored with earch <code>IModule</code> represents the dynamically loaded library, and need to be
+<p>The <code>GenModule</code> stored with each <code>IModule</code> represents the dynamically loaded library, and need to be
 stored as long as the corresponding module exists.</p>
 <p>The <code>nlohmann::json m_config</code> is the global config object,
 it will store every module's config.</p>
@@ -249,7 +249,7 @@ std::cout &lt;&lt; "Request version is &lt;&lt; major &lt;&lt; '.' &lt;&lt; mino
 <p>Same thing for the body</p>
 <pre><code class="language-cpp">virtual std::string const &amp;body() const = 0;
 virtual void setBody(std::string const &amp;body) = 0;</code></pre>
-<p>Then you can access and manipulate the differents parameters with thoses methods.</p>
+<p>Then you can access and manipulate the different parameters with those methods.</p>
 <pre><code class="language-cpp">virtual bool hasParam(std::string const &amp;param) const = 0;
 virtual std::string &amp;operator[](std::string const &amp;param) = 0;
 virtual std::string const &amp;at(std::string const &amp;param) const = 0;
@@ -262,7 +262,7 @@ virtual iterator end() noexcept = 0;
 virtual const_iterator begin() const noexcept = 0;
 virtual const_iterator end() const noexcept = 0;</code></pre>
 <blockquote>
-<p>Again, you can note the <code>begin()</code> and <code>end()</code> methods for for range usage.</p>
+<p>Again, you can note the <code>begin()</code> and <code>end()</code> methods for range-based for loop.</p>
 </blockquote>
 <p>Finally, both Request and Response might need to be displayed as a string.</p>
 <pre><code class="language-cpp">virtual std::string toString() = 0;</code></pre>
@@ -276,7 +276,7 @@ It can store a uri of this format.</p>
 void setPath(std::string const &amp;path);</code></pre>
 <p>You can check if it has a certain parameter</p>
 <pre><code class="language-cpp">bool hasParam(std::string const &amp;param) const;</code></pre>
-<p>And get is as a string</p>
+<p>This method allow you to get the uri as a string</p>
 <pre><code class="language-cpp">std::string toString() const;</code></pre>
 <p>Also, the global <code>operator&lt;&lt;</code> has been overloaded to allow using <code>http::Uri</code> directly with an <code>std::ostream</code>.</p>
 <pre><code class="language-cpp">std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os, teq::http::Uri const &amp;uri);</code></pre>
@@ -297,7 +297,7 @@ void setPath(std::string const &amp;path);</code></pre>
 <pre><code class="language-http">https://www.ludonope.com/search.php?query=hello&amp;query=world</code></pre>
 <hr />
 <h2 id="irequest">IRequest</h2>
-<p>The request is quite simple. In addition of the IBase methods, it's simply is composed of a method and a Uri.</p>
+<p>The request is quite simple. In addition of the IBase methods, it simply is composed of a method and a Uri.</p>
 <pre><code class="language-cpp">virtual Method method() const = 0;
 virtual void setMethod(Method method) = 0;
 virtual Uri const &amp;uri() const = 0;
@@ -468,7 +468,7 @@ virtual void setOutput(std::queue&lt;http::Message&gt; &amp;queue) = 0;</code></
 <pre><code class="language-cpp">virtual void log(LogType type, std::string const &amp;message) = 0;</code></pre>
 <h2 id="the-handler-module">The Handler module</h2>
 <p>The handler module is also quite simple.
-The <code>handle</code> method takes the input request, and the output response to fill, and return a <code>bool</code> to indicate if it effectively handled the request.</p>
+The <code>handle</code> method takes the input request, and the output response to fill, and returns a <code>bool</code> to indicate if it effectively handled the request.</p>
 <pre><code class="language-cpp">virtual bool handle(http::IRequest &amp;req, http::IResponse &amp;res) = 0;</code></pre>
 <p>For example, if you made a simple <code>php</code> file handler, it would look something like this</p>
 <pre><code class="language-cpp">bool PhpHandler::handle(http::IRequest &amp;req, http::IResponse &amp;res)
