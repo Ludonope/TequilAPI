@@ -14,9 +14,9 @@ namespace teq
     public:
       virtual ~IResponse() noexcept {}
       virtual StatusCode status() const = 0;
-      virtual void status(StatusCode status) = 0;
+      virtual void setStatus(StatusCode status) = 0;
       virtual std::string const &reason() const = 0;
-      virtual void reason(std::string const &reason) = 0;
+      virtual void setReason(std::string const &reason) = 0;
     };
   }
 }

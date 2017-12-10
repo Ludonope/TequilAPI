@@ -312,9 +312,9 @@ Similarly, the response is simply made of a status code and a reason (the corres
 
 ```cpp
 virtual StatusCode status() const = 0;
-virtual void status(StatusCode status) = 0;
+virtual void setStatus(StatusCode status) = 0;
 virtual std::string const &reason() const = 0;
-virtual void reason(std::string const &reason) = 0;
+virtual void setReason(std::string const &reason) = 0;
 ```
 
 The different status code are stored in a enum. You can add custom ones in your implementation.
@@ -570,3 +570,6 @@ The `OutputData` filter is just as the `InputData` one, but applies on the outpu
 ```cpp
 std::function<void(std::string &)>
 ```
+
+##The Project UML
+[UML of the API](https://raw.githubusercontent.com/Ludonope/TequilAPI/master/project_uml.png)

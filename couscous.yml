@@ -79,3 +79,6 @@ menu:
         filter:
           text: The Filter module
           relativeUrl: index.html#the-filter-module
+        uml:
+          text: The Project UML
+          relativeUrl: index.html#the-project-uml
