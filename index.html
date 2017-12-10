@@ -118,7 +118,7 @@
 </ul>
 <p>There is also something called Filter. Thoses are functions that are called at specific stages of the request processing to modify (if needed) the data.</p>
 <p>The Core is here to store and manage every modules.</p>
-<p><a href="https://github.com/Ludonope/TequilAPI/raw/master/how_does_it_works.png">Picture describing how it works</a></p>
+<p><img src="https://github.com/Ludonope/TequilAPI/raw/master/how_does_it_works.png" alt="Picture describing how it works" /></p>
 <h2 id="the-core">The Core</h2>
 <p>It can load or unload a specific module.</p>
 <pre><code class="language-cpp">virtual IModule *load(std::string const &amp;path);
@@ -521,7 +521,7 @@ With the <code>IModule::init(...)</code> method, you can add callbacks in the di
 <p>The <code>OutputData</code> filter is just as the <code>InputData</code> one, but applies on the output <code>string</code>. This one can apply encryption or compression for example.</p>
 <pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
 <h2 id="the-project-uml">The Project UML</h2>
-<p><a href="https://github.com/Ludonope/TequilAPI/raw/master/project_uml.png">UML of the API</a></p>
+<p><img src="https://github.com/Ludonope/TequilAPI/raw/master/project_uml.png" alt="UML of the API" /></p>
                 </section>
 
             </div>
