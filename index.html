@@ -488,12 +488,8 @@ The <code>handle</code> method takes the input request, and the output response 
 <blockquote>
 <p>Please note that this handler is only checking for &quot;.php&quot; extension, which is not the only php valid extension. This is only for code simplicity.</p>
 </blockquote>
-<h2 id="the-filter-module">The Filter module</h2>
-<p>And finally, the <code>IFilter</code> interface. This one is a little bit different, in the fact that it doesn't add any method.
-It is only used as a Marker Interface, for polymophism and readability.</p>
-<p>Why doesn't it have any method ?
-Because filters themselves are functions, and not a module.
-With the <code>IModule::init(...)</code> method, you can add callbacks in the differents filter registers.</p>
+<h2 id="the-filters">The Filters</h2>
+<p>Filters are functions called at different stage of the request processing.</p>
 <p>There are 4 different types of filter</p>
 <pre><code class="language-cpp">namespace teq
 {
