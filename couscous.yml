@@ -35,7 +35,7 @@ cname:
 branch: gh-pages
 
 # Any variable you put in this file is also available in the Twig layouts:
-title: TequilAPI 🌮󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠󠀠
+title: TequilAPI 🌮
 subTitle: A good API for a good project
 fontAwesomeIcon: fa
 footerText: A drunk API made by Arthur ARNAUD, Antoine BACHÉ, Ludovic PETRENKO and Lucas TRONCY

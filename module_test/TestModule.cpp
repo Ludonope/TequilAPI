@@ -46,5 +46,5 @@ void TestModule::init(teq::ACore &core, nlohmann::json const &)
 
 void TestModule::log(teq::LogType type, std::string const &message)
 {
-  std::cout << type << ": " << message << std::endl;
+  std::cout << static_cast<int>(type) << ": " << message << std::endl;
 }

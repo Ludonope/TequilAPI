@@ -7,13 +7,13 @@ The server works with a core and different types of module.
 - The Connection module manages the network I/O and communicate with the Core through input and output queues.
 - The Config Loader module, well, loads the configurations.
 - Logger modules does log.
-- Handlers take an http request, and if they can handle it, fill an http response.
+- Handlers take an http request, and if it can handle it, fill an http response.
 
 There is also something called Filter. Thoses are functions that are called at specific stages of the request processing to modify (if needed) the data.
 
 The Core is here to store and manage every modules.
 
-[Picture describing how it works](https://github.com/Ludonope/TequilAPI/raw/master/how_does_it_works.png)
+![Picture describing how it works](https://github.com/Ludonope/TequilAPI/raw/master/how_does_it_works.png)
 
 ##The Core
 
@@ -66,7 +66,7 @@ namespace teq
 }
 ```
 
-Note that the `SlotRegister` does not allow to access to the stored elements.
+Note that the `SlotRegister` does not allow to access the stored elements.
 To access thoses, we use a `SlotList` (which is a `SlotRegister`). This one allow direct access to the storage.
 
 ```cpp
@@ -88,7 +88,7 @@ namespace teq
 }
 ```
 
-> The `begin()` and `end()` method will allow you to use this container in for range loops.
+> The `begin()` and `end()` method will allow you to use this container in range-based for loops.
 
 The `Filter.hpp` file also define aliases on those types for uniform usage.
 
@@ -127,7 +127,7 @@ template <filter::Type T>
 filter::Register<T> &get();
 ```
 
-This way, you can add a specific filter this way
+You can add a specific filter this way
 
 ```cpp
 core.get<filter::Type::Request>().add(...);
@@ -165,7 +165,7 @@ SlotList<ILogger *> m_loggers;
 nlohmann::json m_config;
 ```
 
-The `GenModule` stored with earch `IModule` represents the dynamically loaded library, and need to be
+The `GenModule` stored with each `IModule` represents the dynamically loaded library, and need to be
 stored as long as the corresponding module exists.
 
 The `nlohmann::json m_config` is the global config object,
@@ -198,7 +198,7 @@ virtual std::string const &body() const = 0;
 virtual void setBody(std::string const &body) = 0;
 ```
 
-Then you can access and manipulate the differents parameters with thoses methods.
+Then you can access and manipulate the different parameters with those methods.
 ```cpp
 virtual bool hasParam(std::string const &param) const = 0;
 virtual std::string &operator[](std::string const &param) = 0;
@@ -213,7 +213,7 @@ virtual const_iterator begin() const noexcept = 0;
 virtual const_iterator end() const noexcept = 0;
 ```
 
-> Again, you can note the `begin()` and `end()` methods for for range usage.
+> Again, you can note the `begin()` and `end()` methods for range-based for loop.
 
 Finally, both Request and Response might need to be displayed as a string.
 ```cpp
@@ -240,7 +240,7 @@ You can check if it has a certain parameter
 bool hasParam(std::string const &param) const;
 ```
 
-And get is as a string
+This method allow you to get the uri as a string
 ```cpp
 std::string toString() const;
 ```
@@ -276,7 +276,7 @@ https://www.ludonope.com/search.php?query=hello&query=world
 ---
 ##IRequest
 
-The request is quite simple. In addition of the IBase methods, it's simply is composed of a method and a Uri.
+The request is quite simple. In addition of the IBase methods, it simply is composed of a method and a Uri.
 
 ```cpp
 virtual Method method() const = 0;
@@ -498,7 +498,7 @@ virtual void log(LogType type, std::string const &message) = 0;
 ##The Handler module
 
 The handler module is also quite simple.
-The `handle` method takes the input request, and the output response to fill, and return a `bool` to indicate if it effectively handled the request.
+The `handle` method takes the input request, and the output response to fill, and returns a `bool` to indicate if it effectively handled the request.
 
 ```cpp
 virtual bool handle(http::IRequest &req, http::IResponse &res) = 0;
@@ -572,4 +572,4 @@ std::function<void(std::string &)>
 ```
 
 ##The Project UML
-[UML of the API](https://github.com/Ludonope/TequilAPI/raw/master/project_uml.png)
+![UML of the API](https://github.com/Ludonope/TequilAPI/raw/master/project_uml.png)
