@@ -128,7 +128,7 @@
                                             The Core
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
                                             The Http Request / Response Base
                                         </a>
@@ -179,34 +179,45 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <h1 id="the-filters">The Filters</h1>
-<p>Filters are functions called at different stage of the request processing.</p>
-<p>There are 4 different types of filter</p>
-<pre><code class="language-cpp">namespace teq
-{
-  namespace filter
-  {
-    enum class Type
-    {
-      InputData,
-      Request,
-      Response,
-      OutputData
-    };
-  }
-}</code></pre>
+                    <h1 id="how-to-implement-the-http-request--response-base">How to implement the http Request / Response Base?</h1>
+<p>Implementing the http Request / Response Base is pretty straighforward.</p>
+<p>You will have two way to implementing it.</p>
+<ul>
+<li>By directly implementing your Request and Response with the Base methods</li>
+<li>By implementing an intermediate <code>ABase</code> class, from which your Request and Response will inherit from.</li>
+</ul>
+<p>From now, I will consider we use the second option, which is, in my opinion, by far the best.</p>
 <hr />
-<p>The <code>InputData</code> filter applies on the input <code>string</code> which comes directly from the Connection module. This is before the string is parsed as a request. It can for example apply some decryption or decompression to the data.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Request</code> filter applies, as the name suggest, on the request. This step occurs once the request was parsed, but before it is consumed by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IRequest &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Response</code> filter is really similar to the <code>Request</code> one, it applies on the reponse right after it was filled by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IResponse &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>OutputData</code> filter is just as the <code>InputData</code> one, but applies on the output <code>string</code>. This one can apply encryption or compression for example.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
+<p>Make your class inherit from <code>teq::http::IBase</code>.</p>
+<p>You will have to implement thoses getters / setters</p>
+<pre><code class="language-cpp">virtual std::pair&lt;std::int32_t, std::int32_t&gt; version() const = 0;
+virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;
+virtual std::string const &amp;body() const = 0;
+virtual void setBody(std::string const &amp;body) = 0;</code></pre>
+<blockquote>
+<p>So complicated</p>
+</blockquote>
+<p>Then, you'll have to implement those methods</p>
+<pre><code class="language-cpp">virtual bool hasParam(std::string const &amp;param) const = 0;
+virtual std::string &amp;operator[](std::string const &amp;param) = 0;
+virtual std::string const &amp;at(std::string const &amp;param) const = 0;
+virtual std::string &amp;at(std::string const &amp;param) = 0;
+virtual void clearParams() = 0;
+virtual size_type paramCount() const noexcept = 0;
+virtual iterator begin() noexcept = 0;
+virtual iterator end() noexcept = 0;
+virtual const_iterator begin() const noexcept = 0;
+virtual const_iterator end() const noexcept = 0;</code></pre>
+<p>They are pretty much just a simple call to an underlying container.</p>
+<p>This container better be a <code>std::map&lt;std::string, std::string&gt;</code>.</p>
+<p>Why ?</p>
+<p>Because of those (and because it's common sense):</p>
+<pre><code class="language-cpp">using size_type = std::map&lt;std::string, std::string&gt;::size_type;
+using iterator = std::map&lt;std::string, std::string&gt;::iterator;
+using const_iterator = std::map&lt;std::string, std::string&gt;::const_iterator;
+using reverse_iterator = std::reverse_iterator&lt;iterator&gt;;
+using const_reverse_iterator = std::reverse_iterator&lt;const_iterator&gt;;</code></pre>
+<p>This allow you to access your object pretty much as if I was an STL container.</p>
                 </section>
 
             </div>

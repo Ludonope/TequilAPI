@@ -133,7 +133,7 @@
                                             The Http Request / Response Base
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/implementation/request.html">
                                             The Http Request
                                         </a>
@@ -179,34 +179,19 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <h1 id="the-filters">The Filters</h1>
-<p>Filters are functions called at different stage of the request processing.</p>
-<p>There are 4 different types of filter</p>
-<pre><code class="language-cpp">namespace teq
-{
-  namespace filter
-  {
-    enum class Type
-    {
-      InputData,
-      Request,
-      Response,
-      OutputData
-    };
-  }
-}</code></pre>
+                    <h1 id="how-to-implement-the-http-request-">How to implement the Http Request ?</h1>
+<p>First, you need to implement the Http Request / Response Base.</p>
+<p>If you haven't done it yet, learn <a href="implementation/base.html">how to implement the Http Request / Response Base</a>.</p>
 <hr />
-<p>The <code>InputData</code> filter applies on the input <code>string</code> which comes directly from the Connection module. This is before the string is parsed as a request. It can for example apply some decryption or decompression to the data.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
+<p>Make your class inherit from <code>ABase</code> and <code>teq::http::IRequest</code>.</p>
+<p>Now (be careful, it really is complicated), you need to implement 2 getters and 2 setters.</p>
+<pre><code class="language-cpp">virtual Method method() const = 0;
+virtual void setMethod(Method method) = 0;
+virtual Uri const &amp;uri() const = 0;
+virtual void setUri(Uri const &amp;uri) = 0;</code></pre>
 <hr />
-<p>The <code>Request</code> filter applies, as the name suggest, on the request. This step occurs once the request was parsed, but before it is consumed by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IRequest &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Response</code> filter is really similar to the <code>Request</code> one, it applies on the reponse right after it was filled by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IResponse &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>OutputData</code> filter is just as the <code>InputData</code> one, but applies on the output <code>string</code>. This one can apply encryption or compression for example.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
+<p>And now, you have to implement the <code>toString()</code> method.</p>
+<p>It's not a functionnality which is really needed for the Http Request (since we only need to convert a <code>string</code> into a request, not the other way around), but it might be useful for debugging and some module might use it to do some strange stuff.</p>
                 </section>
 
             </div>

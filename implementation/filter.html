@@ -168,7 +168,7 @@
                                             A Handler
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/implementation/filter.html">
                                             A Filter
                                         </a>
@@ -179,34 +179,54 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <h1 id="the-filters">The Filters</h1>
-<p>Filters are functions called at different stage of the request processing.</p>
-<p>There are 4 different types of filter</p>
-<pre><code class="language-cpp">namespace teq
+                    <h1 id="how-to-implement-a-filter-">How to implement a Filter ?</h1>
+<p>First, you need to implement module.</p>
+<p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
+<hr />
+<p>A filter is different, since it's a function, and not a module. Any module can apply filter, but if you want a module to only apply filter, you can create one this way.</p>
+<p>Make your class inherit from <code>teq::IModule</code>.</p>
+<p>You will only have to implement the <code>init()</code> method.</p>
+<pre><code class="language-cpp">// Filter.hpp
+class Filter : public IModule
 {
-  namespace filter
-  {
-    enum class Type
-    {
-      InputData,
-      Request,
-      Response,
-      OutputData
-    };
-  }
+public:
+  // ...
+  static void onInput(std::string &amp;input);
+  static void onRequest(teq::IRequest &amp;req);
+  static void onResponse(teq::IResponse &amp;res);
+  static void onOutput(std::string &amp;output);
+};
+
+// Filter.cpp
+void Filter::onInput(std::string &amp;input)
+{
+  // ...
+}
+
+void Filter::onRequest(teq::IRequest &amp;req)
+{
+  // ...
+}
+
+void Filter::onResponse(teq::IResponse &amp;res)
+{
+  // ...
+}
+
+void Filter::onOutput(std::string &amp;output)
+{
+  // ...
+}
+
+void Filter::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
+{
+  m_config = &amp;config;
+  m_core = &amp;core;
+  core.get&lt;teq::filter::Type::InputData&gt;().add(&amp;Filter::onInput);
+  core.get&lt;teq::filter::Type::Request&gt;().add(&amp;Filter::onRequest);
+  core.get&lt;teq::filter::Type::Response&gt;().add(&amp;Filter::onResponse);
+  core.get&lt;teq::filter::Type::OutputData&gt;().add(&amp;Filter::onOutput);
 }</code></pre>
-<hr />
-<p>The <code>InputData</code> filter applies on the input <code>string</code> which comes directly from the Connection module. This is before the string is parsed as a request. It can for example apply some decryption or decompression to the data.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Request</code> filter applies, as the name suggest, on the request. This step occurs once the request was parsed, but before it is consumed by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IRequest &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Response</code> filter is really similar to the <code>Request</code> one, it applies on the reponse right after it was filled by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IResponse &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>OutputData</code> filter is just as the <code>InputData</code> one, but applies on the output <code>string</code>. This one can apply encryption or compression for example.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
                 </section>
 
             </div>

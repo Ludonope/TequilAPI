@@ -163,7 +163,7 @@
                                             A Logger
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/implementation/handler.html">
                                             A Handler
                                         </a>
@@ -179,34 +179,38 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <h1 id="the-filters">The Filters</h1>
-<p>Filters are functions called at different stage of the request processing.</p>
-<p>There are 4 different types of filter</p>
-<pre><code class="language-cpp">namespace teq
+                    <h1 id="how-to-implement-a-logger-module-">How to implement a Logger module ?</h1>
+<p>First, you need to implement module.</p>
+<p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
+<hr />
+<p>Make your class inherit from <code>teq::IHandler</code>.</p>
+<p>First, you will have to implement the <code>init()</code> method.</p>
+<pre><code class="language-cpp">void Logger::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
 {
-  namespace filter
-  {
-    enum class Type
-    {
-      InputData,
-      Request,
-      Response,
-      OutputData
-    };
-  }
+  m_config = &amp;config;
+  m_core = &amp;core;
+  core.handlers().add(this);
 }</code></pre>
 <hr />
-<p>The <code>InputData</code> filter applies on the input <code>string</code> which comes directly from the Connection module. This is before the string is parsed as a request. It can for example apply some decryption or decompression to the data.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Request</code> filter applies, as the name suggest, on the request. This step occurs once the request was parsed, but before it is consumed by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IRequest &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>Response</code> filter is really similar to the <code>Request</code> one, it applies on the reponse right after it was filled by a handler.</p>
-<pre><code class="language-cpp">std::function&lt;void(http::IResponse &amp;)&gt;</code></pre>
-<hr />
-<p>The <code>OutputData</code> filter is just as the <code>InputData</code> one, but applies on the output <code>string</code>. This one can apply encryption or compression for example.</p>
-<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
+<p>Then, you'll have to implement the <code>handle()</code> method.
+It takes the input request <code>req</code>, the response <code>res</code> to fill, and return a <code>bool</code> to indicate if the request was handled or not.</p>
+<pre><code class="language-cpp">bool PhpHandler::handle(http::IRequest &amp;req, http::IResponse &amp;res)
+{
+  auto path = req.uri().path();
+
+  if (path.size() &gt;= 4 &amp;&amp; path.substr(path.size() - 4, 4) != ".php")
+  {
+    return false;
+  }
+
+  // Handle the request and fill the response
+  // ...
+
+  return true;
+}</code></pre>
+<blockquote>
+<p>Please note that this handler is only checking for &quot;.php&quot; extension, which is not the only php valid extension. This is only for code simplicity.</p>
+</blockquote>
                 </section>
 
             </div>
