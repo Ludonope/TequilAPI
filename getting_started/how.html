@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -62,7 +62,7 @@
                                             Getting Started
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/getting_started/how.html">
                                             How does the server works ?
                                         </a>
@@ -118,12 +118,17 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
-<hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+                    <h1 id="how-does-the-server-works-">How does the server works ?</h1>
+<p>The server works with a core and different types of module.</p>
+<ul>
+<li>The Connection module manages the network I/O and communicate with the Core through input and output queues.</li>
+<li>The Config Loader module, well, loads the configurations.</li>
+<li>Logger modules does log.</li>
+<li>Handlers take an http request, and if it can handle it, fill an http response.</li>
+</ul>
+<p>There is also something called Filter. Thoses are functions that are called at specific stages of the request processing to modify (if needed) the data.</p>
+<p>The Core is here to store and manage every modules.</p>
+<p><img src="https://github.com/Ludonope/TequilAPI/raw/master/how_does_it_works.png" alt="Picture describing how it works" /></p>
                 </section>
 
             </div>

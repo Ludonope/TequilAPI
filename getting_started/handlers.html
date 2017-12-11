@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -118,12 +118,28 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
-<hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+                    <h1 id="the-handler-module">The Handler module</h1>
+<p>The handler module is also quite simple.
+The <code>handle</code> method takes the input request, and the output response to fill, and returns a <code>bool</code> to indicate if it effectively handled the request.</p>
+<pre><code class="language-cpp">virtual bool handle(http::IRequest &amp;req, http::IResponse &amp;res) = 0;</code></pre>
+<p>For example, if you made a simple <code>php</code> file handler, it would look something like this</p>
+<pre><code class="language-cpp">bool PhpHandler::handle(http::IRequest &amp;req, http::IResponse &amp;res)
+{
+  auto path = req.uri().path();
+
+  if (path.size() &gt;= 4 &amp;&amp; path.substr(path.size() - 4, 4) != ".php")
+  {
+    return false;
+  }
+
+  // Handle the request and fill the response
+  // ...
+
+  return true;
+}</code></pre>
+<blockquote>
+<p>Please note that this handler is only checking for &quot;.php&quot; extension, which is not the only php valid extension. This is only for code simplicity.</p>
+</blockquote>
                 </section>
 
             </div>

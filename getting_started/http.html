@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -72,7 +72,7 @@
                                             The Core
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/getting_started/http.html">
                                             The http Request and Response
                                         </a>
@@ -118,12 +118,158 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
-<hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+                    <h1 id="the-http-request-and-response">The http Request and Response</h1>
+<h2 id="ibase">IBase</h2>
+<p>Both of these elements have a lot in common. This is why there is an <code>http::IBase</code> which provide them some methods.</p>
+<p>Firstly, you can get and set the version.</p>
+<pre><code class="language-cpp">virtual std::pair&lt;std::int32_t, std::int32_t&gt; version() const = 0;
+virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;</code></pre>
+<p>This would allow this usage</p>
+<pre><code class="language-cpp">req.setVersion(1, 1); // Setting the http version to 1.1
+
+auto [major, minor] = req.version();
+
+std::cout &lt;&lt; "Request version is &lt;&lt; major &lt;&lt; '.' &lt;&lt; minor &lt;&lt; std::endl;</code></pre>
+<p>Same thing for the body</p>
+<pre><code class="language-cpp">virtual std::string const &amp;body() const = 0;
+virtual void setBody(std::string const &amp;body) = 0;</code></pre>
+<p>Then you can access and manipulate the different parameters with those methods.</p>
+<pre><code class="language-cpp">virtual bool hasParam(std::string const &amp;param) const = 0;
+virtual std::string &amp;operator[](std::string const &amp;param) = 0;
+virtual std::string const &amp;at(std::string const &amp;param) const = 0;
+virtual std::string &amp;at(std::string const &amp;param) = 0;
+virtual void clearParams() = 0;
+virtual size_type paramCount() const noexcept = 0;
+
+virtual iterator begin() noexcept = 0;
+virtual iterator end() noexcept = 0;
+virtual const_iterator begin() const noexcept = 0;
+virtual const_iterator end() const noexcept = 0;</code></pre>
+<blockquote>
+<p>Again, you can note the <code>begin()</code> and <code>end()</code> methods for range-based for loop.</p>
+</blockquote>
+<p>Finally, both Request and Response might need to be displayed as a string.</p>
+<pre><code class="language-cpp">virtual std::string toString() = 0;</code></pre>
+<h2 id="uri">Uri</h2>
+<p>The <code>http::Uri</code> object will be used by the <code>IRequest</code> interface.
+It can store a uri of this format.</p>
+<pre><code class="language-http">https://www.ludonope.com/path/to/something.html?p=oui&amp;p2=non&amp;p3=ah</code></pre>
+<p>You can access the path with those methods</p>
+<pre><code class="language-cpp">std::string const &amp;path() const;
+void setPath(std::string const &amp;path);</code></pre>
+<p>You can check if it has a certain parameter</p>
+<pre><code class="language-cpp">bool hasParam(std::string const &amp;param) const;</code></pre>
+<p>This method allow you to get the uri as a string</p>
+<pre><code class="language-cpp">std::string toString() const;</code></pre>
+<p>Also, the global <code>operator&lt;&lt;</code> has been overloaded to allow using <code>http::Uri</code> directly with an <code>std::ostream</code>.</p>
+<pre><code class="language-cpp">std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os, teq::http::Uri const &amp;uri);</code></pre>
+<p>Finally, to make the Uri parameters convenient, we made it inherit an <code>std::map</code>.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  namespace http
+  {
+    class Uri final : public std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;
+    {
+      // ...
+    };
+  }
+}</code></pre>
+<p>This way, you can use it like a regular <code>std::map</code>, with all the good methods which come with it !</p>
+<pre><code class="language-cpp">auto val = uri["search"][0];</code></pre>
+<p>Notice that it's a <code>std::map</code> of <code>std::string</code> and a <code>vector&lt;std::string&gt;</code>. This is because you can have a parameter more than once. For example, this is a valid uri.</p>
+<pre><code class="language-http">https://www.ludonope.com/search.php?query=hello&amp;query=world</code></pre>
+<h2 id="irequest">IRequest</h2>
+<p>The request is quite simple. In addition of the IBase methods, it simply is composed of a method and a Uri.</p>
+<pre><code class="language-cpp">virtual Method method() const = 0;
+virtual void setMethod(Method method) = 0;
+virtual Uri const &amp;uri() const = 0;
+virtual void setUri(Uri const &amp;uri) = 0;</code></pre>
+<p>The http methods are stored in an enum.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  namespace http
+  {
+    enum class Method
+    {
+      GET,
+      HEAD,
+      POST,
+      PUT,
+      DELETE,
+      CONNECT,
+      OPTIONS,
+      TRACE
+    };
+  }
+}</code></pre>
+<h2 id="iresponse">IResponse</h2>
+<p>Similarly, the response is simply made of a status code and a reason (the corresponding message).</p>
+<pre><code class="language-cpp">virtual StatusCode status() const = 0;
+virtual void setStatus(StatusCode status) = 0;
+virtual std::string const &amp;reason() const = 0;
+virtual void setReason(std::string const &amp;reason) = 0;</code></pre>
+<p>The different status code are stored in a enum. You can add custom ones in your implementation.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  namespace http
+  {
+    struct StatusCode
+    {
+      enum
+      {
+        // Informational
+        Continue = 100,
+        SwitchingProtocol = 101,
+
+        // Success
+        OK = 200,
+        Created = 201,
+        Accepted = 202,
+        NonAuthoritativeInformation = 203,
+        NoContent = 204,
+        ResetContent = 205,
+        PartialContent = 206,
+
+        // Redirection
+        MultipleChoices = 300,
+        MovedPermanently = 301,
+        Found = 302,
+        SeeOther = 303,
+        NotModified = 304,
+        UseProxy = 305,
+        TemporaryRedirect = 307,
+
+        // Client Error
+        BadRequest = 400,
+        Unauthorized = 401,
+        PaymentRequired = 402,
+        Forbidden = 403,
+        NotFound = 404,
+        MethodNotAllowed = 405,
+        NotAcceptable = 406,
+        ProxyAuthentificationRequired = 407,
+        RequestTimeOut = 408,
+        Conflict = 409,
+        Gone = 410,
+        LengthRequired = 411,
+        PreconditionFailed = 412,
+        RequestEntityTooLarge = 413,
+        RequestURITooLarge = 414,
+        UnsupportedMediaType = 415,
+        RequestedRangeNotSatisfiable = 416,
+        ExpectationFailed = 417,
+
+        // Server Error
+        InternalServerError = 500,
+        NotImplemented = 501,
+        BadGateway = 502,
+        ServiceUnavailable = 503,
+        GatewayTimeOut = 504,
+        HTTPVersionNotSupported = 505
+      };
+    };
+  }
+}</code></pre>
                 </section>
 
             </div>

@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -92,7 +92,7 @@
                                             The Configuration Loader module
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/getting_started/logger.html">
                                             The Logger module
                                         </a>
@@ -118,12 +118,20 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
-<hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+                    <h1 id="the-logger-module">The Logger module</h1>
+<p>The <code>ILogger</code> interface only add a <code>log</code> method, which takes a <code>LogType</code> and a <code>string</code> message</p>
+<pre><code class="language-cpp">namespace teq
+{
+  enum class LogType
+  {
+    Trace,
+    Debug,
+    Info,
+    Warning,
+    Error
+  };
+}</code></pre>
+<pre><code class="language-cpp">virtual void log(LogType type, std::string const &amp;message) = 0;</code></pre>
                 </section>
 
             </div>

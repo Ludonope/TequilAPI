@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -118,12 +118,34 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
+                    <h1 id="the-filters">The Filters</h1>
+<p>Filters are functions called at different stage of the request processing.</p>
+<p>There are 4 different types of filter</p>
+<pre><code class="language-cpp">namespace teq
+{
+  namespace filter
+  {
+    enum class Type
+    {
+      InputData,
+      Request,
+      Response,
+      OutputData
+    };
+  }
+}</code></pre>
 <hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+<p>The <code>InputData</code> filter applies on the input <code>string</code> which comes directly from the Connection module. This is before the string is parsed as a request. It can for example apply some decryption or decompression to the data.</p>
+<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
+<hr />
+<p>The <code>Request</code> filter applies, as the name suggest, on the request. This step occurs once the request was parsed, but before it is consumed by a handler.</p>
+<pre><code class="language-cpp">std::function&lt;void(http::IRequest &amp;)&gt;</code></pre>
+<hr />
+<p>The <code>Response</code> filter is really similar to the <code>Request</code> one, it applies on the reponse right after it was filled by a handler.</p>
+<pre><code class="language-cpp">std::function&lt;void(http::IResponse &amp;)&gt;</code></pre>
+<hr />
+<p>The <code>OutputData</code> filter is just as the <code>InputData</code> one, but applies on the output <code>string</code>. This one can apply encryption or compression for example.</p>
+<pre><code class="language-cpp">std::function&lt;void(std::string &amp;)&gt;</code></pre>
                 </section>
 
             </div>

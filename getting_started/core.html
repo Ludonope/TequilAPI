@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -67,7 +67,7 @@
                                             How does the server works ?
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/getting_started/core.html">
                                             The Core
                                         </a>
@@ -118,12 +118,121 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
+                    <h1 id="the-core">The Core</h1>
+<p>It can load or unload a specific module.</p>
+<pre><code class="language-cpp">virtual IModule *load(std::string const &amp;path);
+virtual void unload(IModule *module);</code></pre>
+<p>It can set or unset one of the main modules (Config Loader and Connection).</p>
+<pre><code class="language-cpp">virtual void setConfigLoader(IConfigLoader *module);
+virtual void setConnection(IConnection *module);
+virtual void unsetConfigLoader(IConfigLoader *module);
+virtual void unsetConnection(IConnection *module);</code></pre>
 <hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+<p>Here is the <code>SlotRegister</code>, it allows you to add or remove elements in a &quot;list&quot;, with positionning priority.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  enum class Priority
+  {
+    VeryLow = 0,
+    Low = 1,
+    Normal = 2,
+    High = 3,
+    VeryHigh = 4
+  };
+}</code></pre>
+<pre><code class="language-cpp">namespace teq
+{
+  template &lt;typename T&gt;
+  class SlotRegister
+  {
+  public:
+    // ...
+    T &amp;add(IModule const *parent, T const &amp;value, Priority priority = Priority::Normal);
+    void remove(T const &amp;value);
+    void clear(IModule const *parent);
+    // ...
+  };
+}</code></pre>
+<p>Note that the <code>SlotRegister</code> does not allow to access the stored elements.
+To access thoses, we use a <code>SlotList</code> (which is a <code>SlotRegister</code>). This one allow direct access to the storage.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  template &lt;typename T&gt;
+  class SlotList final : public SlotRegister&lt;T&gt;
+  {
+    // ...
+    size_type size() const noexcept;
+    bool empty() const noexcept;
+    T const &amp;operator[](size_type index) const;
+    T &amp;operator[](size_type index);
+    iterator begin() noexcept;
+    iterator end() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator end() const noexcept;
+  };
+}</code></pre>
+<blockquote>
+<p>The <code>begin()</code> and <code>end()</code> method will allow you to use this container in range-based for loops.</p>
+</blockquote>
+<p>The <code>Filter.hpp</code> file also define aliases on those types for uniform usage.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  namespace filter
+  {
+    enum class Type
+    {
+      InputData,
+      Request,
+      Response,
+      OutputData
+    };
+
+    template &lt;Type T&gt;
+    using Register = SlotRegister&lt;...&gt;;
+
+    template &lt;Type T&gt;
+    using List = SlotList&lt;...&gt;;
+  }
+}</code></pre>
+<hr />
+<p>Let's move back on the <code>ACore</code>.
+So here are the loggers, handlers and filters getters.</p>
+<pre><code class="language-cpp">virtual SlotRegister&lt;ILogger *&gt; &amp;loggers();
+virtual SlotRegister&lt;IHandler *&gt; &amp;handlers();
+
+template &lt;filter::Type T&gt;
+filter::Register&lt;T&gt; &amp;get();</code></pre>
+<p>You can add a specific filter this way</p>
+<pre><code class="language-cpp">core.get&lt;filter::Type::Request&gt;().add(...);</code></pre>
+<p>Finally, it has a <code>log</code> method which will pass the parameters to every registered logger.</p>
+<pre><code class="language-cpp">virtual void log(LogType type, std::string const &amp;message);</code></pre>
+<hr />
+<blockquote>
+<p>All of these methods are already implemented in the ACore, but you are free to override them as you want.</p>
+</blockquote>
+<hr />
+<p>The <code>ACore</code> store all of theses modules.</p>
+<pre><code class="language-cpp">// List of every loaded modules
+std::vector&lt;std::pair&lt;std::unique_ptr&lt;GenModule&gt;, std::unique_ptr&lt;IModule&gt;&gt;&gt; m_modules;
+
+// Main modules
+IConfigLoader *m_configLoader;
+IConnection *m_connection;
+
+// Filter lists
+filter::List&lt;filter::Type::InputData&gt; m_inputFilters;
+filter::List&lt;filter::Type::Request&gt; m_requestFilters;
+filter::List&lt;filter::Type::Response&gt; m_responseFilters;
+filter::List&lt;filter::Type::OutputData&gt; m_outputFilters;
+
+SlotList&lt;IHandler *&gt; m_handlers;
+SlotList&lt;ILogger *&gt; m_loggers;
+
+nlohmann::json m_config;</code></pre>
+<p>The <code>GenModule</code> stored with each <code>IModule</code> represents the dynamically loaded library, and need to be
+stored as long as the corresponding module exists.</p>
+<p>The <code>nlohmann::json m_config</code> is the global config object,
+it will store every module's config.</p>
                 </section>
 
             </div>

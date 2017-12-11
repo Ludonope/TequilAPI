@@ -42,62 +42,73 @@
 
                                     <nav id="sidebar" class="col-sm-3 col-lg-2 collapse in" role="navigation">
                                                     <p class="text-muted">
-                                Getting started
+                                Home
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#tequilapi">
-                                            TequilAPI
+                                        <a href="http://ludonope.github.io/TequilAPI/index.html">
+                                            Home
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Getting Started
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/">
+                                            Getting Started
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#how-does-the-server-works-">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/how.html">
                                             How does the server works ?
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-core">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/core.html">
                                             The Core
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-http-request-and-response">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/http.html">
                                             The http Request and Response
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-modules">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/modules.html">
                                             The modules
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-connection-module">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/connection.html">
                                             The Connection module
                                         </a>
                                     </li>
-                                                                    <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-configuration-loader-module">
+                                                                    <li class="active">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/config_loader.html">
                                             The Configuration Loader module
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-logger-module">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/logger.html">
                                             The Logger module
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-handler-module">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/handlers.html">
                                             The Handler module
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-filter-module">
-                                            The Filter module
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/filters.html">
+                                            The Filters
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/index.html#the-project-uml">
+                                        <a href="http://ludonope.github.io/TequilAPI/getting_started/uml.html">
                                             The Project UML
                                         </a>
                                     </li>
@@ -107,8 +118,18 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <h1 id="tequilapi">TequilAPI</h1>
-<p>Le parfait mélange entre un projet Epitech et une bonne Tequila ! 🌮🇲🇽</p>
+                    <h1 id="the-configuration-loader-module">The Configuration Loader module</h1>
+<p>The <code>IConfigLoader</code> allow the core to simply load a configuration file. Your implementation will define the file language (JSON, XML, YAML, ...), but the config itself will be stored as a JSON object (from the <a href="https://github.com/nlohmann/json">nlohmann json Library</a>).</p>
+<p>It provide a single method in complement of the <code>IMainModule</code> ones</p>
+<pre><code class="language-cpp">namespace teq
+{
+  class IConfigLoader : public IMainModule
+  {
+  public:
+    virtual ~IConfigLoader() noexcept {}
+    virtual void load(std::string const &amp;path, nlohmann::json &amp;config) = 0;
+  };
+}</code></pre>
                 </section>
 
             </div>

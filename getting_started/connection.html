@@ -46,7 +46,7 @@
                             </p>
 
                             <ul class="nav nav-pills nav-stacked">
-                                                                    <li class="active">
+                                                                    <li class="">
                                         <a href="http://ludonope.github.io/TequilAPI/index.html">
                                             Home
                                         </a>
@@ -82,7 +82,7 @@
                                             The modules
                                         </a>
                                     </li>
-                                                                    <li class="">
+                                                                    <li class="active">
                                         <a href="http://ludonope.github.io/TequilAPI/getting_started/connection.html">
                                             The Connection module
                                         </a>
@@ -118,12 +118,24 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <p>TequilAPI is part of an Epitech project called Zia.</p>
-<p>The goal of this project is to make a cross-platform and modular HTTP/1.1 server.</p>
-<p>For this, everybody have to create and use a common API to make their project compatible with each others.</p>
-<hr />
-<p>Take a drink, and enjoy the tour !</p>
-<p><a href="getting_started/index.html">Getting Started</a></p>
+                    <h1 id="the-connection-module">The Connection module</h1>
+<p>The connection module has one major functionnality. It has to launch his own thread to manage network I/O with the client independently.</p>
+<p>To manage this, the core will give it two <code>http::Message</code> queues.</p>
+<p>An <code>http::Message</code> is really simple, it's just a <code>string</code> with an <code>id</code>. This is used by the connection module when it has to send a response, to which request it correspond.</p>
+<pre><code class="language-cpp">namespace teq
+{
+  namespace http
+  {
+    struct Message
+    {
+      std::string id;
+      std::string content;
+    };
+  }
+}</code></pre>
+<p>To achieve that, the <code>IConnection</code> interface provides those methods, in addition to the <code>IMainModule</code> ones</p>
+<pre><code class="language-cpp">virtual void setInput(std::queue&lt;http::Message&gt; &amp;queue) = 0;
+virtual void setOutput(std::queue&lt;http::Message&gt; &amp;queue) = 0;</code></pre>
                 </section>
 
             </div>
