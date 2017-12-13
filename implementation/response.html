@@ -189,10 +189,10 @@
 For your information, the <code>IResponse</code> inherit virtually from <code>IMessage</code> too.</p>
 </blockquote>
 <p>Then you need to implement those getters / setters.</p>
-<pre><code class="language-cpp">virtual StatusCode status() const = 0;
-virtual void setStatus(StatusCode status) = 0;
-virtual std::string const &amp;reason() const = 0;
-virtual void setReason(std::string const &amp;reason) = 0;</code></pre>
+<pre><code class="language-cpp">virtual StatusCode status() const;
+virtual void setStatus(StatusCode status);
+virtual std::string const &amp;reason() const;
+virtual void setReason(std::string const &amp;reason);</code></pre>
 <hr />
 <p>And, you might want to implement the <code>toString()</code> method, it could help, like just a little bit.</p>
                 </section>

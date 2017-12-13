@@ -197,8 +197,8 @@ Here <code>m_core</code> and <code>m_config</code> are references.</p>
 </blockquote>
 <hr />
 <p>You then have to implement those</p>
-<pre><code class="language-cpp">virtual void setInput(SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;
-virtual void setOutput(SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;</code></pre>
+<pre><code class="language-cpp">virtual void setInput(teq::SafeQueue&lt;teq::http::RawMessage&gt; &amp;queue);
+virtual void setOutput(teq::SafeQueue&lt;teq::http::RawMessage&gt; &amp;queue);</code></pre>
 <p>Please take note to avoid confusion:</p>
 <ul>
 <li>The module receive request from client and push them in the input queue (the <code>setInput()</code> one)</li>
@@ -206,8 +206,8 @@ virtual void setOutput(SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;</code>
 </ul>
 <hr />
 <p>You will also have to implement those methods.</p>
-<pre><code class="language-cpp">virtual void enableConnection() = 0;
-virtual void disableConnection() = 0;</code></pre>
+<pre><code class="language-cpp">virtual void enableConnection();
+virtual void disableConnection();</code></pre>
 <p>It will allow us to launch and stop a thread to manage network I/O asynchronously.</p>
 <pre><code class="language-cpp">// Connection.hpp
 class Connection : public teq::IConnection

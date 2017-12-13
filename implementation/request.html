@@ -189,10 +189,10 @@
 For your information, the <code>IRequest</code> inherit virtually from <code>IMessage</code> too.</p>
 </blockquote>
 <p>Now (be careful, it really is complicated), you need to implement 2 getters and 2 setters.</p>
-<pre><code class="language-cpp">virtual Method method() const = 0;
-virtual void setMethod(Method method) = 0;
-virtual Uri const &amp;uri() const = 0;
-virtual void setUri(Uri const &amp;uri) = 0;</code></pre>
+<pre><code class="language-cpp">virtual Method method() const;
+virtual void setMethod(Method method);
+virtual Uri const &amp;uri() const;
+virtual void setUri(Uri const &amp;uri);</code></pre>
 <hr />
 <p>And now, you have to implement the <code>toString()</code> method.</p>
 <p>It's not a functionnality which is really needed for the Http Request (since we only need to convert a <code>string</code> into a request, not the other way around), but it might be useful for debugging and some module might use it to do some strange stuff.</p>

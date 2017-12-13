@@ -200,24 +200,24 @@ This will create a conflict since, both <code>AMessage</code> and <code>IRequest
 <p>So please, don't forget that <code>virtual</code>.</p>
 </blockquote>
 <p>You will have to implement thoses getters / setters</p>
-<pre><code class="language-cpp">virtual std::pair&lt;std::int32_t, std::int32_t&gt; version() const = 0;
-virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;
-virtual std::string const &amp;body() const = 0;
-virtual void setBody(std::string const &amp;body) = 0;</code></pre>
+<pre><code class="language-cpp">virtual std::pair&lt;std::int32_t, std::int32_t&gt; version() const;
+virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1);
+virtual std::string const &amp;body() const;
+virtual void setBody(std::string const &amp;body);</code></pre>
 <blockquote>
 <p>So complicated</p>
 </blockquote>
 <p>Then, you'll have to implement those methods</p>
-<pre><code class="language-cpp">virtual bool hasHeader(std::string const &amp;header) const = 0;
-virtual std::string &amp;operator[](std::string const &amp;header) = 0;
-virtual std::string const &amp;at(std::string const &amp;header) const = 0;
-virtual std::string &amp;at(std::string const &amp;header) = 0;
-virtual void clearHeaders() = 0;
-virtual size_type headerCount() const noexcept = 0;
-virtual iterator begin() noexcept = 0;
-virtual iterator end() noexcept = 0;
-virtual const_iterator begin() const noexcept = 0;
-virtual const_iterator end() const noexcept = 0;</code></pre>
+<pre><code class="language-cpp">virtual bool hasHeader(std::string const &amp;header) const;
+virtual std::string &amp;operator[](std::string const &amp;header);
+virtual std::string const &amp;at(std::string const &amp;header) const;
+virtual std::string &amp;at(std::string const &amp;header);
+virtual void clearHeaders();
+virtual size_type headerCount() const noexcept;
+virtual iterator begin() noexcept;
+virtual iterator end() noexcept;
+virtual const_iterator begin() const noexcept;
+virtual const_iterator end() const noexcept;</code></pre>
 <p>They are pretty much just a simple call to an underlying container.</p>
 <p>This container better be a <code>std::map&lt;std::string, std::string&gt;</code>.</p>
 <p>Why ?</p>

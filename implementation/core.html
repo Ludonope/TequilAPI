@@ -187,11 +187,9 @@
 {
   while (!this-&gt;stop)
   {
-    if (m_inputRequestQueue.empty() == false)
+    if (m_inputQueue.empty() == false)
     {
-      std::string req = std::move(m_inputRequestQueue.front());
-
-      m_inputRequestQueue.pop();
+      auto [id, req] = m_inputQueue.front().pop();
 
       // Process the request
       // ...
@@ -219,7 +217,7 @@
 <li>Push the filtered output in the <code>outputQueue</code> for the Connection module.</li>
 </ul>
 <hr />
-<p>You will also have to override the <code>load()</code> and <code>unload()</code> methods. Right now, their implementation &quot;only&quot; load the <code>.so</code> or <code>.dll</code>, but it doesn't check if there is already another module with the same name, or even the same module, which you might want to verify.</p>
+<p>You might also have to override the <code>load()</code> and <code>unload()</code> methods. Right now, their implementation &quot;only&quot; load the <code>.so</code> or <code>.dll</code>, but it doesn't check if there is already another module with the same name, or even the same module, which you might want to verify.</p>
 <hr />
 <p>Concerning the configuration itself, it will managed in the following way. The main settings will be stored directly in the <code>json</code> object. There will also be a <code>modules</code> property, which will be the object containing every module configuration.</p>
 <pre><code class="language-json">{

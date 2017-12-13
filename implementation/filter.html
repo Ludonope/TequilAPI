@@ -196,14 +196,13 @@ public:
   Filter(teq::ACore &amp;core, nlohmann::json const &amp;config);
 
   static void onInput(std::string &amp;input);
-  static void onRequest(teq::IRequest &amp;req);
-  static void onResponse(teq::IResponse &amp;res);
+  static void onRequest(teq::http::IRequest &amp;req);
+  static void onResponse(teq::http::IResponse &amp;res);
   static void onOutput(std::string &amp;output);
   // ...
 
 private:
   // ...
-
   teq::ACore &amp;m_core;
   nlohmann::json const &amp;config;
 };
@@ -224,12 +223,12 @@ void Filter::onInput(std::string &amp;input)
   // ...
 }
 
-void Filter::onRequest(teq::IRequest &amp;req)
+void Filter::onRequest(teq::http::IRequest &amp;req)
 {
   // ...
 }
 
-void Filter::onResponse(teq::IResponse &amp;res)
+void Filter::onResponse(teq::http::IResponse &amp;res)
 {
   // ...
 }

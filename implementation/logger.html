@@ -184,13 +184,6 @@
 <p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
 <hr />
 <p>Make your class inherit from <code>teq::ILogger</code>.</p>
-<p>First, you will have to implement the <code>init()</code> method.</p>
-<pre><code class="language-cpp">void Logger::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
-{
-  m_config = &amp;config;
-  m_core = &amp;core;
-  core.loggers().add(this);
-}</code></pre>
 <p>First, you will have to implement your constructor.</p>
 <pre><code class="language-cpp">void Logger::Logger(teq::ACore &amp;core, nlohmann::json const &amp;config) :
   m_core(core),

@@ -218,8 +218,8 @@ extern "C"
 <p>We strongly encourage you to take (at least) both <code>core</code> and <code>config</code> as your module constructor parameters. This will be essential to correctly integrate your module.</p>
 <hr />
 <p>Once this is done, you will have to implement the <code>name()</code> and <code>description()</code> getters.</p>
-<pre><code class="language-cpp">virtual std::string const &amp;name() const = 0;
-virtual std::string const &amp;description() const = 0;</code></pre>
+<pre><code class="language-cpp">virtual std::string const &amp;name() const;
+virtual std::string const &amp;description() const;</code></pre>
 <blockquote>
 <p>Be careful to store the name and description as string in the module.</p>
 <p>Do not return temporary string.</p>
