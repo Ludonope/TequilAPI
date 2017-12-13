@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -184,29 +184,30 @@
 <p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
 <hr />
 <p>Make your class inherit from <code>teq::IConnection</code>.</p>
-<p>First, you will have to implement the <code>init()</code> method.</p>
-<pre><code class="language-cpp">void Connection::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
+<p>First, you will have to implement your constructor.</p>
+<pre><code class="language-cpp">void Connection::Connection(teq::ACore &amp;core, nlohmann::json const &amp;config) :
+  m_core(core),
+  m_config(config)
 {
-  m_config = &amp;config;
-  m_core = &amp;core;
-  core.setConnection(this);
+  m_core.setConnection(this);
 }</code></pre>
+<blockquote>
+<p>Of course you can add parameters to your constructor.
+Here <code>m_core</code> and <code>m_config</code> are references.</p>
+</blockquote>
 <hr />
 <p>You then have to implement those</p>
-<pre><code class="language-cpp">virtual void setInput(std::queue&lt;http::Message&gt; &amp;queue) = 0;
-virtual void setOutput(std::queue&lt;http::Message&gt; &amp;queue) = 0;</code></pre>
+<pre><code class="language-cpp">virtual void setInput(SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;
+virtual void setOutput(SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;</code></pre>
 <p>Please take note to avoid confusion:</p>
 <ul>
 <li>The module receive request from client and push them in the input queue (the <code>setInput()</code> one)</li>
 <li>The core receive response from handler and push them in the output queue (the <code>setOutput()</code> one)</li>
 </ul>
-<blockquote>
-<p>I know, using a <code>std::queue</code> is not thread safe. It will be replaced by a <code>SafeQueue</code> very soon. For now, let's do like if the <code>std::queue</code> was actually thread safe.</p>
-</blockquote>
 <hr />
-<p>Now, since the <code>teq::IConnection</code> inherit from <code>teq::IMainModule</code>, you will have to implement those two</p>
-<pre><code class="language-cpp">virtual void enable() = 0;
-virtual void disable() = 0;</code></pre>
+<p>You will also have to implement those methods.</p>
+<pre><code class="language-cpp">virtual void enableConnection() = 0;
+virtual void disableConnection() = 0;</code></pre>
 <p>It will allow us to launch and stop a thread to manage network I/O asynchronously.</p>
 <pre><code class="language-cpp">// Connection.hpp
 class Connection : public teq::IConnection
@@ -228,7 +229,7 @@ void Connection::manageNetwork()
   }
 }
 
-void Connection::enable()
+void Connection::enableConnection()
 {
   m_stop = false;
   m_thread = std::thread([this]() {
@@ -236,7 +237,7 @@ void Connection::enable()
   });
 }
 
-void Connection::disable()
+void Connection::disableConnection()
 {
   m_stop = true;
   m_thread.join();

@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -189,7 +189,7 @@ virtual void setConnection(IConnection *module);
 virtual void unsetConfigLoader(IConfigLoader *module);
 virtual void unsetConnection(IConnection *module);</code></pre>
 <hr />
-<p>Here is the <code>SlotRegister</code>, it allows you to add or remove elements in a &quot;list&quot;, with positionning priority.</p>
+<p>Here is the <code>SlotRegister</code>, it allows you to add or clear elements in a &quot;list&quot;, with positionning priority.</p>
 <pre><code class="language-cpp">namespace teq
 {
   enum class Priority
@@ -209,7 +209,6 @@ virtual void unsetConnection(IConnection *module);</code></pre>
   public:
     // ...
     T &amp;add(IModule const *parent, T const &amp;value, Priority priority = Priority::Normal);
-    void remove(T const &amp;value);
     void clear(IModule const *parent);
     // ...
   };
@@ -265,6 +264,7 @@ template &lt;filter::Type T&gt;
 filter::Register&lt;T&gt; &amp;get();</code></pre>
 <p>You can add a specific filter this way</p>
 <pre><code class="language-cpp">core.get&lt;filter::Type::Request&gt;().add(...);</code></pre>
+<hr />
 <p>Finally, it has a <code>log</code> method which will pass the parameters to every registered logger.</p>
 <pre><code class="language-cpp">virtual void log(LogType type, std::string const &amp;message);</code></pre>
 <hr />
@@ -289,9 +289,13 @@ filter::List&lt;filter::Type::OutputData&gt; m_outputFilters;
 SlotList&lt;IHandler *&gt; m_handlers;
 SlotList&lt;ILogger *&gt; m_loggers;
 
+SafeQueue&lt;http::RawMessage&gt; m_input;
+SafeQueue&lt;http::RawMessage&gt; m_output;
+
 nlohmann::json m_config;</code></pre>
 <p>The <code>GenModule</code> stored with each <code>IModule</code> represents the dynamically loaded library, and need to be
 stored as long as the corresponding module exists.</p>
+<p>The two <code>SafeQueue&lt;http::RawMessage&gt;</code> called <code>m_input</code> and <code>m_output</code> are thread safe queues used to communicate with the Connection module. They will be detailed in the Connection module section.</p>
 <p>The <code>nlohmann::json m_config</code> is the global config object,
 it will store every module's config.</p>
                 </section>

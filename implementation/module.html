@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -181,7 +181,8 @@
                 <section class="col-sm-9 col-lg-10 content">
                     <h1 id="how-to-implement-a-module-">How to implement a module ?</h1>
 <p>The module need some requirements. As you might know, it as to be compiled as a <code>.so</code> (linux | OSX) or a <code>.dll</code> (Windows) to be loaded dynamically at runtime.</p>
-<p>To achieve this, you will have to create an entry point, called <code>getModule()</code>, by including this bit of code in your module. <code>YourModule</code> being ... your module.</p>
+<p>To achieve this, you will have to create a getter for the name <code>getModuleName()</code> and an entry point, called <code>getModule()</code>, by including this bit of code in your module.</p>
+<p><code>YourModule</code> being ... your module.</p>
 <pre><code class="language-cpp">#if defined(_WIN32)
 # include &lt;Windows.h&gt;
 # include &lt;cstdbool&gt;
@@ -197,9 +198,14 @@
 
 extern "C"
 {
-  MODULE_API teq::IModule *getModule()
+  MODULE_API char const *getModuleName()
   {
-    return new YourModule(/* Pass your params here if needed */);
+    return "AwesomeModule";
+  }
+
+  MODULE_API teq::IModule *getModule(teq::ACore &amp;core, nlohmann::json const &amp;config)
+  {
+    return new YourModule(core, config);
   }
 
 #if defined(_WIN32)
@@ -209,6 +215,7 @@ extern "C"
   }
 #endif
 }</code></pre>
+<p>We strongly encourage you to take (at least) both <code>core</code> and <code>config</code> as your module constructor parameters. This will be essential to correctly integrate your module.</p>
 <hr />
 <p>Once this is done, you will have to implement the <code>name()</code> and <code>description()</code> getters.</p>
 <pre><code class="language-cpp">virtual std::string const &amp;name() const = 0;
@@ -225,13 +232,11 @@ virtual std::string const &amp;description() const = 0;</code></pre>
 <p>Do that instead</p>
 <pre><code class="language-cpp">std::string const &amp;YourModule::name() const
 {
- return m_name;  
+ return m_name;
 }</code></pre>
 </blockquote>
 <hr />
-<p>Then you will have to implement the <code>init()</code> method, but since it's specific to each Module, it will be detailed for each of them.</p>
-<pre><code class="language-cpp">virtual void init(ACore &amp;core, nlohmann::json const &amp;config) = 0;</code></pre>
-<p>Just remember that you might want to keep pointers on both the config and the core, to allow access to a dynamic configuration, and to allow log through the core.</p>
+<p>Then you will have to implement your constructor, but since it's specific to each Module, it will be detailed for each of them.</p>
 <hr />
 <p>Also notice that a module can be of multiple types.</p>
 <p>Yes, a single module can manage the connection, the configuration loading, be a logger, a handler, and add filters.</p>

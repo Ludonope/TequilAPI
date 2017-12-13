@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -181,22 +181,39 @@
                 <section class="col-sm-9 col-lg-10 content">
                     <h1 id="the-connection-module">The Connection module</h1>
 <p>The connection module has one major functionnality. It has to launch his own thread to manage network I/O with the client independently.</p>
-<p>To manage this, the core will give it two <code>http::Message</code> queues.</p>
-<p>An <code>http::Message</code> is really simple, it's just a <code>string</code> with an <code>id</code>. This is used by the connection module when it has to send a response, to which request it correspond.</p>
+<p>To manage this, the core will give it two <code>SafeQueue&lt;http::RawMessage&gt;</code>.</p>
+<p>A <code>SafeQueue</code> is a simple thread safe queue (implemented with a <code>std::vector</code> for better performances).</p>
+<pre><code class="language-cpp">namespace teq
+{
+  template &lt;typename T&gt;
+  class SafeQueue
+  {
+  public:
+    void push(T const &amp;val);
+    void push(T &amp;&amp;val);
+    T pop();
+    bool empty() const;
+    typename std::vector&lt;T&gt;::size_type size() const;
+  };
+}</code></pre>
+<p>A <code>http::RawMessage</code> is really simple, it's just a <code>string</code> with an <code>id</code>. This id allow the Connection module to know which Response correspond to which Request.</p>
 <pre><code class="language-cpp">namespace teq
 {
   namespace http
   {
-    struct Message
+    struct RawMessage
     {
       std::string id;
       std::string content;
     };
   }
 }</code></pre>
-<p>To achieve that, the <code>IConnection</code> interface provides those methods, in addition to the <code>IMainModule</code> ones</p>
-<pre><code class="language-cpp">virtual void setInput(std::queue&lt;http::Message&gt; &amp;queue) = 0;
-virtual void setOutput(std::queue&lt;http::Message&gt; &amp;queue) = 0;</code></pre>
+<p>To communicate with the Core, the <code>IConnection</code> interface provides those methods.</p>
+<pre><code class="language-cpp">virtual void setInput(std::SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;
+virtual void setOutput(std::SafeQueue&lt;http::RawMessage&gt; &amp;queue) = 0;</code></pre>
+<p>To allow the Connection module to launch and stop a thread, we need those methods.</p>
+<pre><code class="language-cpp">virtual void enableConnection() = 0;
+virtual void disableConnection() = 0;</code></pre>
                 </section>
 
             </div>

@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -191,6 +191,19 @@
   m_core = &amp;core;
   core.loggers().add(this);
 }</code></pre>
+<p>First, you will have to implement your constructor.</p>
+<pre><code class="language-cpp">void Logger::Logger(teq::ACore &amp;core, nlohmann::json const &amp;config) :
+  m_core(core),
+  m_config(config)
+{
+  core.loggers().add(this, this);
+}</code></pre>
+<blockquote>
+<p>Of course you can add parameters to your constructor.
+Here <code>m_core</code> and <code>m_config</code> are references.</p>
+<p>The first <code>this</code> is the parent, the second one is the element itself.</p>
+<p>This will probably be modified soon to avoid such absurd code.</p>
+</blockquote>
 <hr />
 <p>Then you will simply have to implement the <code>log()</code> method.</p>
 <pre><code class="language-cpp">void Logger::log(LogType type, std::string const &amp;message)

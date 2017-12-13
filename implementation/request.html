@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="active">
@@ -180,10 +180,14 @@
                 
                 <section class="col-sm-9 col-lg-10 content">
                     <h1 id="how-to-implement-the-http-request-">How to implement the Http Request ?</h1>
-<p>First, you need to implement the Http Request / Response Base.</p>
-<p>If you haven't done it yet, learn <a href="implementation/base.html">how to implement the Http Request / Response Base</a>.</p>
+<p>First, you need to implement the Http Message.</p>
+<p>If you haven't done it yet, learn <a href="implementation/message.html">how to implement the Http Message</a>.</p>
 <hr />
-<p>Make your class inherit from <code>ABase</code> and <code>teq::http::IRequest</code>.</p>
+<p>Make your class inherit from your <code>AMessage</code> and <code>teq::http::IRequest</code>.</p>
+<blockquote>
+<p>This is where you will be happy to have made the virtual inheritance on the <code>AMessage</code>.
+For your information, the <code>IRequest</code> inherit virtually from <code>IMessage</code> too.</p>
+</blockquote>
 <p>Now (be careful, it really is complicated), you need to implement 2 getters and 2 setters.</p>
 <pre><code class="language-cpp">virtual Method method() const = 0;
 virtual void setMethod(Method method) = 0;

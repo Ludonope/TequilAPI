@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -183,14 +183,19 @@
 <p>First, you need to implement module.</p>
 <p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
 <hr />
-<p>Make your class inherit from <code>teq::IHandler</code>.</p>
-<p>First, you will have to implement the <code>init()</code> method.</p>
-<pre><code class="language-cpp">void Logger::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
+<p>First, you will have to implement your constructor.</p>
+<pre><code class="language-cpp">void Handler::Handler(teq::ACore &amp;core, nlohmann::json const &amp;config) :
+  m_core(core),
+  m_config(config)
 {
-  m_config = &amp;config;
-  m_core = &amp;core;
-  core.handlers().add(this);
+  core.handlers().add(this, this);
 }</code></pre>
+<blockquote>
+<p>Of course you can add parameters to your constructor.
+Here <code>m_core</code> and <code>m_config</code> are references.</p>
+<p>The first <code>this</code> is the parent, the second one is the element itself.</p>
+<p>This will probably be modified soon to avoid such absurd code.</p>
+</blockquote>
 <hr />
 <p>Then, you'll have to implement the <code>handle()</code> method.
 It takes the input request <code>req</code>, the response <code>res</code> to fill, and return a <code>bool</code> to indicate if the request was handled or not.</p>

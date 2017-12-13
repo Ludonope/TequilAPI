@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="active">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -179,16 +179,26 @@
 
                 
                 <section class="col-sm-9 col-lg-10 content">
-                    <h1 id="how-to-implement-the-http-request--response-base">How to implement the http Request / Response Base?</h1>
-<p>Implementing the http Request / Response Base is pretty straighforward.</p>
+                    <h1 id="how-to-implement-the-http-message">How to implement the http Message?</h1>
+<p>Implementing the http Message is pretty straighforward.</p>
 <p>You will have two way to implementing it.</p>
 <ul>
-<li>By directly implementing your Request and Response with the Base methods</li>
-<li>By implementing an intermediate <code>ABase</code> class, from which your Request and Response will inherit from.</li>
+<li>By directly implementing your Request and Response with the Message methods</li>
+<li>By implementing an intermediate <code>AMessage</code> class, from which your Request and Response will inherit from.</li>
 </ul>
 <p>From now, I will consider we use the second option, which is, in my opinion, by far the best.</p>
 <hr />
-<p>Make your class inherit from <code>teq::http::IBase</code>.</p>
+<p>Make your class inherit virtually from <code>teq::http::IMessage</code>.</p>
+<blockquote>
+<p>I insist on the fact that, if you chose to make an <code>AMessage</code> class, you have to make a virtual inheritance.</p>
+<pre><code class="language-cpp">class AMessage : public virtual teq::http::IMessage
+{
+ // ...
+};</code></pre>
+<p>This is because your <code>Request</code> and <code>Response</code> will inherit from <code>AMessage</code>, and from <code>IRequest</code> and <code>IResponse</code> respectively.
+This will create a conflict since, both <code>AMessage</code> and <code>IRequest</code> or <code>IResponse</code> inherit from <code>IMessage</code>.</p>
+<p>So please, don't forget that <code>virtual</code>.</p>
+</blockquote>
 <p>You will have to implement thoses getters / setters</p>
 <pre><code class="language-cpp">virtual std::pair&lt;std::int32_t, std::int32_t&gt; version() const = 0;
 virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;
@@ -198,12 +208,12 @@ virtual void setBody(std::string const &amp;body) = 0;</code></pre>
 <p>So complicated</p>
 </blockquote>
 <p>Then, you'll have to implement those methods</p>
-<pre><code class="language-cpp">virtual bool hasParam(std::string const &amp;param) const = 0;
-virtual std::string &amp;operator[](std::string const &amp;param) = 0;
-virtual std::string const &amp;at(std::string const &amp;param) const = 0;
-virtual std::string &amp;at(std::string const &amp;param) = 0;
-virtual void clearParams() = 0;
-virtual size_type paramCount() const noexcept = 0;
+<pre><code class="language-cpp">virtual bool hasHeader(std::string const &amp;header) const = 0;
+virtual std::string &amp;operator[](std::string const &amp;header) = 0;
+virtual std::string const &amp;at(std::string const &amp;header) const = 0;
+virtual std::string &amp;at(std::string const &amp;header) = 0;
+virtual void clearHeaders() = 0;
+virtual size_type headerCount() const noexcept = 0;
 virtual iterator begin() noexcept = 0;
 virtual iterator end() noexcept = 0;
 virtual const_iterator begin() const noexcept = 0;
@@ -217,7 +227,26 @@ using iterator = std::map&lt;std::string, std::string&gt;::iterator;
 using const_iterator = std::map&lt;std::string, std::string&gt;::const_iterator;
 using reverse_iterator = std::reverse_iterator&lt;iterator&gt;;
 using const_reverse_iterator = std::reverse_iterator&lt;const_iterator&gt;;</code></pre>
-<p>This allow you to access your object pretty much as if I was an STL container.</p>
+<p>To use those types, don't forget to add this at the begining of your class definition.</p>
+<pre><code class="language-cpp">class AMessage : public virtual teq::http::IMessage
+{
+public:
+  using teq::http::IMessage::size_type;
+  using teq::http::IMessage::iterator;
+  using teq::http::IMessage::const_iterator;
+
+  // ...
+};</code></pre>
+<p>This allow you to access your object pretty much as if I was an STL container, with range-based for loop and all the stuff.</p>
+<pre><code class="language-cpp">AMessage &amp;msg = getMsg();
+
+for (auto header : msg)
+{
+  std::cout &lt;&lt; header.first &lt;&lt; ": " &lt;&lt; header.second &lt;&lt; "\r\n";
+}
+
+std::cout &lt;&lt; std::flush;</code></pre>
+<p>For example.</p>
                 </section>
 
             </div>

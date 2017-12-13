@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -180,8 +180,8 @@
                 
                 <section class="col-sm-9 col-lg-10 content">
                     <h1 id="the-http-request-and-response">The http Request and Response</h1>
-<h2 id="ibase">IBase</h2>
-<p>Both of these elements have a lot in common. This is why there is an <code>http::IBase</code> which provide them some methods.</p>
+<h2 id="imessage">IMessage</h2>
+<p>Both of these elements have a lot in common. This is why there is an <code>http::IMessage</code> which provide them some methods.</p>
 <p>Firstly, you can get and set the version.</p>
 <pre><code class="language-cpp">virtual std::pair&lt;std::int32_t, std::int32_t&gt; version() const = 0;
 virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;</code></pre>
@@ -190,17 +190,17 @@ virtual void setVersion(std::int32_t major = 1, std::int32_t minor = 1) = 0;</co
 
 auto [major, minor] = req.version();
 
-std::cout &lt;&lt; "Request version is &lt;&lt; major &lt;&lt; '.' &lt;&lt; minor &lt;&lt; std::endl;</code></pre>
+std::cout &lt;&lt; "Request version is" &lt;&lt; major &lt;&lt; '.' &lt;&lt; minor &lt;&lt; std::endl;</code></pre>
 <p>Same thing for the body</p>
 <pre><code class="language-cpp">virtual std::string const &amp;body() const = 0;
 virtual void setBody(std::string const &amp;body) = 0;</code></pre>
-<p>Then you can access and manipulate the different parameters with those methods.</p>
-<pre><code class="language-cpp">virtual bool hasParam(std::string const &amp;param) const = 0;
-virtual std::string &amp;operator[](std::string const &amp;param) = 0;
-virtual std::string const &amp;at(std::string const &amp;param) const = 0;
-virtual std::string &amp;at(std::string const &amp;param) = 0;
-virtual void clearParams() = 0;
-virtual size_type paramCount() const noexcept = 0;
+<p>Then you can access and manipulate the different headers with those methods.</p>
+<pre><code class="language-cpp">virtual bool hasHeader(std::string const &amp;header) const = 0;
+virtual std::string &amp;operator[](std::string const &amp;header) = 0;
+virtual std::string const &amp;at(std::string const &amp;header) const = 0;
+virtual std::string &amp;at(std::string const &amp;header) = 0;
+virtual void clearHeader() = 0;
+virtual size_type headerCount() const noexcept = 0;
 
 virtual iterator begin() noexcept = 0;
 virtual iterator end() noexcept = 0;
@@ -213,7 +213,7 @@ virtual const_iterator end() const noexcept = 0;</code></pre>
 <pre><code class="language-cpp">virtual std::string toString() = 0;</code></pre>
 <h2 id="uri">Uri</h2>
 <p>The <code>http::Uri</code> object will be used by the <code>IRequest</code> interface.
-It can store a uri of this format.</p>
+It can store an uri of this format.</p>
 <pre><code class="language-http">https://www.ludonope.com/path/to/something.html?p=oui&amp;p2=non&amp;p3=ah</code></pre>
 <p>You can access the path with those methods</p>
 <pre><code class="language-cpp">std::string const &amp;path() const;
@@ -237,10 +237,10 @@ void setPath(std::string const &amp;path);</code></pre>
 }</code></pre>
 <p>This way, you can use it like a regular <code>std::map</code>, with all the good methods which come with it !</p>
 <pre><code class="language-cpp">auto val = uri["search"][0];</code></pre>
-<p>Notice that it's a <code>std::map</code> of <code>std::string</code> and a <code>vector&lt;std::string&gt;</code>. This is because you can have a parameter more than once. For example, this is a valid uri.</p>
+<p>Notice that it's a <code>std::map</code> of a <code>std::string</code> and a <code>vector&lt;std::string&gt;</code>. This is because you can have a parameter more than once. For example, this is a valid uri.</p>
 <pre><code class="language-http">https://www.ludonope.com/search.php?query=hello&amp;query=world</code></pre>
 <h2 id="irequest">IRequest</h2>
-<p>The request is quite simple. In addition of the IBase methods, it simply is composed of a method and a Uri.</p>
+<p>The request is quite simple. In addition of the IMessage methods, it simply is composed of a method and a Uri.</p>
 <pre><code class="language-cpp">virtual Method method() const = 0;
 virtual void setMethod(Method method) = 0;
 virtual Uri const &amp;uri() const = 0;

@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -189,29 +189,9 @@
     virtual ~IModule() noexcept {}
     virtual std::string const &amp;name() const = 0;
     virtual std::string const &amp;description() const = 0;
-    virtual void init(ACore &amp;core, nlohmann::json const &amp;config) = 0;
   };
 }</code></pre>
-<p>The <code>init</code> method will be called by the core when it just finished loading the module.
-This way, the module will be able to register itself in the right slots onto the core.</p>
-<p>For example, a logger <code>init</code> method could look something like this</p>
-<pre><code class="language-cpp">void Logger::init(teq::ACore &amp;core, nlohmann::json const &amp;)
-{
-  core.loggers().add(this, this);
-}</code></pre>
-<p>We also defined a bit mode specific module type, which is the <code>IMainModule</code>, from which inherit both the Connection module and the Configuration Loader module.</p>
-<pre><code class="language-cpp">namespace teq
-{
-  class IMainModule : public IModule
-  {
-  public:
-    virtual ~IMainModule() noexcept {}
-    virtual void enable() = 0;
-    virtual void disable() = 0;
-  };
-}</code></pre>
-<p>This might allow us to launch a thread in these modules.
-This will be needed by the Connection module, but it can also be used for the Connection Loader module, if we want some hot reload configuration features for example.</p>
+<p>The <code>name()</code> and <code>description()</code> methods are simple getters to those values.</p>
                 </section>
 
             </div>

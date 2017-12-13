@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -183,21 +183,42 @@
 <p>First, you need to implement module.</p>
 <p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
 <hr />
-<p>A filter is different, since it's a function, and not a module. Any module can apply filter, but if you want a module to only apply filter, you can create one this way.</p>
+<p>A filter is different, since it's a function, and not a module (but you need a module to add a filter).</p>
+<p>Any module can apply filter.</p>
+<p>Here we will create a module which only goal is to add filters, and nothing else. You can use this code in any other module.</p>
 <p>Make your class inherit from <code>teq::IModule</code>.</p>
-<p>You will only have to implement the <code>init()</code> method.</p>
+<p>You will only have to implement your constructor and the different filtering functions.</p>
 <pre><code class="language-cpp">// Filter.hpp
 class Filter : public IModule
 {
 public:
   // ...
+  Filter(teq::ACore &amp;core, nlohmann::json const &amp;config);
+
   static void onInput(std::string &amp;input);
   static void onRequest(teq::IRequest &amp;req);
   static void onResponse(teq::IResponse &amp;res);
   static void onOutput(std::string &amp;output);
+  // ...
+
+private:
+  // ...
+
+  teq::ACore &amp;m_core;
+  nlohmann::json const &amp;config;
 };
 
 // Filter.cpp
+Filter::Filter(teq::ACore &amp;core, nlohmann::json const &amp;config) :
+  m_core(core),
+  m_config(config)
+{
+  m_core.get&lt;teq::filter::Type::InputData&gt;().add(&amp;Filter::onInput);
+  m_core.get&lt;teq::filter::Type::Request&gt;().add(&amp;Filter::onRequest);
+  m_core.get&lt;teq::filter::Type::Response&gt;().add(&amp;Filter::onResponse);
+  m_core.get&lt;teq::filter::Type::OutputData&gt;().add(&amp;Filter::onOutput);
+}
+
 void Filter::onInput(std::string &amp;input)
 {
   // ...
@@ -216,16 +237,6 @@ void Filter::onResponse(teq::IResponse &amp;res)
 void Filter::onOutput(std::string &amp;output)
 {
   // ...
-}
-
-void Filter::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
-{
-  m_config = &amp;config;
-  m_core = &amp;core;
-  core.get&lt;teq::filter::Type::InputData&gt;().add(&amp;Filter::onInput);
-  core.get&lt;teq::filter::Type::Request&gt;().add(&amp;Filter::onRequest);
-  core.get&lt;teq::filter::Type::Response&gt;().add(&amp;Filter::onResponse);
-  core.get&lt;teq::filter::Type::OutputData&gt;().add(&amp;Filter::onOutput);
 }</code></pre>
                 </section>
 

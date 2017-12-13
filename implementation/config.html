@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -184,20 +184,26 @@
 <p>If you haven't done it yet, learn <a href="implementation/modules.html">how to implement a module</a>.</p>
 <hr />
 <p>Make your class inherit from <code>teq::IConfigLoader</code>.</p>
-<p>First, you will have to implement the <code>init()</code> method.</p>
-<pre><code class="language-cpp">void ConfigLoader::init(teq::ACore &amp;core, nlohmann::json const &amp;config)
+<p>First, you will have to implement your constructor.</p>
+<pre><code class="language-cpp">void ConfigLoader::ConfigLoader(teq::ACore &amp;core, nlohmann::json const &amp;config) :
+  m_core(core),
+  m_config(config)
 {
-  m_config = &amp;config;
-  m_core = &amp;core;
-  core.setConfigLoader(this);
+  m_core.setConfigLoader(this);
 }</code></pre>
+<blockquote>
+<p>Of course you can add parameters to your constructor.
+Here <code>m_core</code> and <code>m_config</code> are references.</p>
+</blockquote>
 <hr />
 <p>Since it only load the configuration file, you simply have to implement this method.</p>
 <pre><code class="language-cpp">virtual void load(std::string const &amp;path, nlohmann::json &amp;config) = 0;</code></pre>
 <p>If you make the choice of using <code>json</code> as configuration file language, your implementation will be pretty easy, thanks to <a href="https://github.com/nlohmann/json">the nlohmann json library</a>.</p>
 <hr />
-<p>You will also need to implement <code>IMainModule</code> methods <code>enable()</code> and <code>disable()</code>.</p>
-<p>You can leave those blank, or you can use it to launch a thread, to allow hot reload feature for example.</p>
+<p>You will also have to implement those methods.</p>
+<pre><code class="language-cpp">virtual void enableConnection() = 0;
+virtual void disableConnection() = 0;</code></pre>
+<p>You can leave those blank, or you can use it to launch a thread, to allow &quot;hot reload&quot; feature for example.</p>
                 </section>
 
             </div>

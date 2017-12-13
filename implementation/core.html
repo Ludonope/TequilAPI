@@ -129,8 +129,8 @@
                                         </a>
                                     </li>
                                                                     <li class="">
-                                        <a href="http://ludonope.github.io/TequilAPI/implementation/base.html">
-                                            The Http Request / Response Base
+                                        <a href="http://ludonope.github.io/TequilAPI/implementation/message.html">
+                                            The Http Message
                                         </a>
                                     </li>
                                                                     <li class="">
@@ -180,7 +180,7 @@
                 
                 <section class="col-sm-9 col-lg-10 content">
                     <h1 id="how-to-implement-the-core">How to implement the Core</h1>
-<p>To be honest, you have by default almost nothing to implement. But still, some functionnality are your work.</p>
+<p>To be honest, you have by default almost nothing to implement. But still, some functionnality are yours to implement.</p>
 <p>Make your class inherit from <code>teq::ACore</code>.</p>
 <p>Firstly, you must have some kind of infite loop checking if there is a new request.</p>
 <pre><code class="language-cpp">void Core::run()
@@ -205,7 +205,7 @@
 <li>Process the request in another dimension through quantic computing</li>
 </ul>
 <hr />
-<p>To process the request, the core has to do those action in this order.</p>
+<p>To process the request, the core has to do those actions in this specific order.</p>
 <p>Each filter list must be applied from the first element to the last, and not in any other order.</p>
 <ul>
 <li>Get the input from the <code>inputQueue</code> filled by the Connection module.</li>
@@ -235,10 +235,22 @@
     }
   }
 }</code></pre>
-<p>When a module's <code>init()</code> method is called, the core have to call it this way:</p>
-<pre><code class="language-cpp">module.init(*this, m_config["modules"][module.name()]);</code></pre>
+<p>When a module is contructed, the Core does something like this.</p>
+<pre><code class="language-cpp">// Load the code and symbols from the 'path' file
+auto mod = std::make_unique&lt;GenModule&gt;(path);
+
+// Get a function pointer to get the module name and call it
+auto name = mod-&gt;getFunction&lt;char const *()&gt;("getModuleName")();
+
+// Get a function pointer to instanciate the module
+auto getter = mod-&gt;getFunction&lt;IModule *(ACore &amp;, nlohmann::json const &amp;)&gt;("getModule");
+
+// Get an instance of the module and store it in a unique_ptr
+auto module = std::unique_ptr&lt;IModule&gt;(getter(*this, m_config["modules"][name]));
+
+// Push them in the vector, etc.</code></pre>
 <hr />
-<p>If you want, you can also override almost every method of the core (excepted get<T> since it's a template).</p>
+<p>If you want, you can also override almost every method of the core (excepted <code>get&lt;T&gt;</code> since it's a template).</p>
 <p>This can help you for debug by making some logs, etc.</p>
                 </section>
 
